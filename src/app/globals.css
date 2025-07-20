@@ -1,26 +1,262 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447937128c320434962155_Telegraf-Bold.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793901b1dbeffba6d9e1_Telegraf-UltraBold.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479376b7fd15975825c63_Telegraf-Bold.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793863584f01f756c521_Telegraf-UltraBold.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447937a5e576e440057bd2_Telegraf-Bold.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793963584fd0b856c522_Telegraf-UltraBold.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479389ec65dbd0d369816_Telegraf-Bold.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62204b25c218fde64f3074bd_Telegraf-UltraBold.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/622027eab98e1c90ade74761_Telegraf-Bold.otf")
+      format("opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6220313f5f1957743a5b0352_Telegraf-UltraBold.otf")
+      format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479377d87a1bf2cce9f64_Telegraf-Black.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447937e8505d0c4cc3ab9b_Telegraf-Black.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793707a53a7239ab9d50_Telegraf-Black.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/622027eacb81f32431e4b1b6_Telegraf-Black.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447937457a867b044a3005_Telegraf-Black.otf")
+      format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938a00fa41d8d35c608_Telegraf-Light.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479380cc74e84e3b1a17d_Telegraf-Light.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479385d971c00ebadb068_Telegraf-Light.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938efd690f95020c5c4_Telegraf-Light.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6220458cc218fdc8a03063ad_Telegraf-Light.otf")
+      format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793831ba437759d8a3b2_Telegraf-Medium.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793879c63cf6c2eb8f84_Telegraf-Medium.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938c5172211fc93e295_Telegraf-Medium.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793873c6764acd286263_Telegraf-Medium.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/622027ebc92d1fa8d925a103_Telegraf-Medium.otf")
+      format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938a56f68d1535f84c1_Telegraf-Regular.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938dcb5142bbca78626_Telegraf-Regular.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938a977a21682f323eb_Telegraf-Regular.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479387d87a1a6d1ce9f65_Telegraf-Regular.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/622027ebd0cb58f8bad07f47_Telegraf-Regular.otf")
+      format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479388057a91f4773171d_Telegraf-SemiBold.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938e8505d7a2dc3ab9c_Telegraf-SemiBold.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/624479386bb9246058b720e1_Telegraf-SemiBold.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447938dcb5144b9ba78627_Telegraf-SemiBold.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/622027ebb1908f3f96b69eb3_Telegraf-SemiBold.otf")
+      format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf;
+  src:
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447939ed19924b94f301c3_Telegraf-UltraLight.woff2")
+      format("woff2"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793fa5e5763297057be2_Telegraf-UltraLight.eot")
+      format("embedded-opentype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6244793922a281024bd7255f_Telegraf-UltraLight.woff")
+      format("woff"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/62447939973b473c3f94d94b_Telegraf-UltraLight.ttf")
+      format("truetype"),
+    url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6220313f0d547caf9a68f4fe_Telegraf-UltraLight.otf")
+      format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Telegraf variable;
+  src: url("https://cdn.prod.website-files.com/61bc21e3a843412266a08eb3/6220458c6243627d2a92e66a_Telegraf-Variable.ttf")
+    format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.877 0.1787 93.028);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.371 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.275 0 0);
+  --input: oklch(0.325 0 0);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.81 0.1 252);
+  --chart-2: oklch(0.62 0.19 260);
+  --chart-3: oklch(0.55 0.22 263);
+  --chart-4: oklch(0.49 0.22 264);
+  --chart-5: oklch(0.42 0.18 266);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.275 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+  --font-sans: Telegraf, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --radius: 0.625rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+  button {
+    cursor: pointer;
+  }
 }
