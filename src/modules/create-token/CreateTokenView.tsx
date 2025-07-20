@@ -57,7 +57,7 @@ export default function CreateTokenView() {
       </div>
 
       {/* Progress Steps */}
-      <Card className="bg-neutral-900 border-neutral-700 py-4">
+      {/* <Card className="bg-neutral-900 border-neutral-700 py-4">
         <CardContent className="px-4">
           <div className="flex items-center justify-between">
             {[
@@ -80,7 +80,7 @@ export default function CreateTokenView() {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Token Form */}

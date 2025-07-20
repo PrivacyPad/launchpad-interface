@@ -173,7 +173,7 @@ export default function PresaleView() {
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium w-1/3">Address</td>
                       <td className="py-3 text-sm text-white">
                         <div className="flex items-center gap-2">
-                          <code className="bg-neutral-800 px-2 py-1 rounded text-primary font-mono text-xs">
+                          <code className="bg-neutral-800 px-2 py-1 rounded text-primary text-xs">
                             {launchpadData.tokenAddress}
                           </code>
                           <Button
@@ -197,11 +197,11 @@ export default function PresaleView() {
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Decimals</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.decimals}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.decimals}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Total Supply</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.totalSupply}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.totalSupply}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -222,7 +222,7 @@ export default function PresaleView() {
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium w-1/3">Address</td>
                       <td className="py-3 text-sm text-white">
                         <div className="flex items-center gap-2">
-                          <code className="bg-neutral-800 px-2 py-1 rounded text-primary font-mono text-xs">
+                          <code className="bg-neutral-800 px-2 py-1 rounded text-primary text-xs">
                             {launchpadData.contractAddress}
                           </code>
                           <Button
@@ -238,31 +238,31 @@ export default function PresaleView() {
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Tokens For Presale</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.tokensForPresale}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.tokensForPresale}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Tokens For Liquidity</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.tokensForLiquidity}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.tokensForLiquidity}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Initial Market Cap</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.initialMarketCap}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.initialMarketCap}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Soft Cap</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.softCap}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.softCap}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Hard Cap</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.hardCap}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.hardCap}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Start Time</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.startTime}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.startTime}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">End Time</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.endTime}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.endTime}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Listing On</td>
@@ -272,11 +272,11 @@ export default function PresaleView() {
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Liquidity Percent</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.liquidityPercent}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.liquidityPercent}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Buyback Percent</td>
-                      <td className="py-3 text-sm text-white font-mono">{launchpadData.buybackPercent}</td>
+                      <td className="py-3 text-sm text-white">{launchpadData.buybackPercent}</td>
                     </tr>
                     <tr className="">
                       <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Liquidity Lockup Time</td>
@@ -412,19 +412,19 @@ export default function PresaleView() {
               <div className="space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-neutral-400">Total Buyback Amount</span>
-                  <span className="text-white font-mono">{launchpadData.totalBuybackAmount}</span>
+                  <span className="text-white">{launchpadData.totalBuybackAmount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-400">Buyback Amount</span>
-                  <span className="text-white font-mono">{launchpadData.buybackAmount}</span>
+                  <span className="text-white">{launchpadData.buybackAmount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-400">Buyback Remain Amount</span>
-                  <span className="text-white font-mono">{launchpadData.buybackRemainAmount}</span>
+                  <span className="text-white">{launchpadData.buybackRemainAmount}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-400">Amount Per Buyback</span>
-                  <span className="text-white font-mono">{launchpadData.amountPerBuyback}</span>
+                  <span className="text-white">{launchpadData.amountPerBuyback}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-neutral-400">Min Buyback Delay</span>

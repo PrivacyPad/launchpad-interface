@@ -8,6 +8,7 @@ import { Clock, Users } from "lucide-react";
 import { useState } from "react";
 import StatsOverview from "./StatsOverview";
 import Link from "next/link";
+import HeroBanner from "./HeroBanner";
 
 export default function HomeView() {
   const recentLaunches = [
@@ -162,6 +163,9 @@ export default function HomeView() {
 
   return (
     <div className="py-6 space-y-6">
+      {/* Hero Banner */}
+      <HeroBanner />
+
       {/* Stats Overview */}
       <StatsOverview />
 

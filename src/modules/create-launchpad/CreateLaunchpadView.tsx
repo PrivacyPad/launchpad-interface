@@ -79,7 +79,7 @@ export default function CreateLaunchpadView() {
                   placeholder="0x..."
                   value={launchpadData.tokenAddress}
                   onChange={(e) => handleInputChange("tokenAddress", e.target.value)}
-                  className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400 font-mono"
+                  className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                 />
               </div>
 
@@ -335,19 +335,19 @@ export default function CreateLaunchpadView() {
                   <Rocket className="w-8 h-8 text-black" />
                 </div>
                 <h3 className="text-white font-bold">{launchpadData.tokenName || "Token Name"}</h3>
-                <p className="text-neutral-400 text-sm font-mono">{launchpadData.tokenSymbol || "SYMBOL"}</p>
+                <p className="text-neutral-400 text-sm">{launchpadData.tokenSymbol || "SYMBOL"}</p>
               </div>
 
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-xs">
                   <DollarSign className="w-3 h-3 text-primary" />
                   <span className="text-neutral-400">Soft Cap:</span>
-                  <span className="text-white font-mono">{launchpadData.softCap || "0"} ETH</span>
+                  <span className="text-white">{launchpadData.softCap || "0"} ETH</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <Target className="w-3 h-3 text-primary" />
                   <span className="text-neutral-400">Hard Cap:</span>
-                  <span className="text-white font-mono">{launchpadData.hardCap || "0"} ETH</span>
+                  <span className="text-white">{launchpadData.hardCap || "0"} ETH</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <Clock className="w-3 h-3 text-primary" />
