@@ -4,7 +4,13 @@ import "./globals.css";
 import { generateMetadata } from "@/utils/seo";
 import StatsBar from "./components/StatsBar";
 
-export const metadata: Metadata = generateMetadata();
+export const metadata: Metadata = {
+  ...generateMetadata(),
+  title: {
+    default: "PrivacyPad - Confidential Token Launchpad",
+    template: "%s | PrivacyPad",
+  },
+};
 
 export default function RootLayout({
   children,
@@ -14,11 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <div>
+        {/* <div>
           <Header />
           <StatsBar />
           <main className="max-w-320 mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
-        </div>
+        </div> */}
+        {children}
       </body>
     </html>
   );

@@ -8,9 +8,10 @@ export type TSEO = {
 };
 
 const defaultSEO: TSEO = {
-  title: "Zama Launchpad",
-  description: "Create and launch your tokens with ease",
-  thumbnail: "/thumbnail.jpeg",
+  title: "PrivacyPad - Confidential Token Launchpad",
+  description:
+    "PrivacyPad is a privacy-focused launchpad enabling confidential participation in decentralized fundraising using Zama's FHE protocol",
+  thumbnail: "/thumbnail.png",
   keywords: ["Zama", "Launchpad", "Tokens", "Blockchain"],
 };
 
@@ -24,13 +25,13 @@ export function generateMetadata({ title, description, thumbnail, keywords }: Pa
       title: title ?? defaultSEO.title,
       description: description ?? defaultSEO.description,
       images: [thumbnail ?? defaultSEO.thumbnail],
-      site: "@zamalaunchpad",
+      site: "@privacypad",
     },
     openGraph: {
       title: title ?? defaultSEO.title,
       description: description ?? defaultSEO.description,
       images: [thumbnail ?? defaultSEO.thumbnail],
-      siteName: "@zamalaunchpad",
+      siteName: "@privacypad",
     },
   };
 }

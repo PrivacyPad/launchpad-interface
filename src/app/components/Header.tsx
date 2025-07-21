@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { navConfig } from "@/configs/nav.config";
 import { cn } from "@/lib/utils";
 import { Wallet } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -17,9 +16,9 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={"/"} className="flex items-center">
-            <img src={"/icon.svg"} alt="Zama's icon" className="size-8" />
-            <h1 className="text-primary font-bold text-xl tracking-wider ml-2">LAUNCHPAD</h1>
-            <span className="ml-2 text-neutral-500 text-xs">v1.0.0 BETA</span>
+            <img src={"/icon.png"} alt="PrivacyPad's icon" className="size-8" />
+            <h1 className="text-primary font-bold text-xl tracking-wider ml-2">PrivacyPad</h1>
+            {/* <span className="ml-2 text-neutral-500 text-xs">v1.0.0 BETA</span> */}
           </Link>
 
           {/* Navigation */}
