@@ -20,12 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        {/* <div>
+        <div>
           <Header />
           <StatsBar />
           <main className="max-w-320 mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
-        </div> */}
-        {children}
+        </div>
       </body>
     </html>
   );
