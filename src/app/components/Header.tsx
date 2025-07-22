@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import WalletButton from "@/components/WalletButton";
 import { navConfig } from "@/configs/nav.config";
 import { cn } from "@/lib/utils";
-import { Wallet } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -16,7 +16,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={"/"} className="flex items-center">
-            <img src={"/icon.png"} alt="PrivacyPad's icon" className="size-8" />
+            <Image src={"/icon.png"} alt="PrivacyPad's icon" width={32} height={32} className="size-8" />
             <h1 className="text-primary font-bold text-xl tracking-wider ml-2">PrivacyPad</h1>
             {/* <span className="ml-2 text-neutral-500 text-xs">v1.0.0 BETA</span> */}
           </Link>
@@ -44,10 +44,7 @@ export default function Header() {
           {/* Right side - Wallet */}
           <div className="flex items-center">
             {/* Wallet Connect Button */}
-            <Button className="bg-primary hover:bg-primary/80 text-black font-medium">
-              <Wallet className="w-4 h-4" />
-              Connect Wallet
-            </Button>
+            <WalletButton />
           </div>
         </div>
       </div>

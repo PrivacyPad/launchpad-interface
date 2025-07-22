@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, Rocket, Star } from "lucide-react";
+import { ArrowRight, Play, Rocket } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 export default function HeroBanner() {
   const router = useRouter();
@@ -41,7 +40,7 @@ export default function HeroBanner() {
           <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-in fade-in slide-in-from-bottom-20 delay-400 duration-1000">
             <Button
               size="default"
-              className="bg-gradient-to-r from-primary to-yellow-500 hover:from-primary/80 hover:to-yellow-500/80 text-black font-semibold px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300 group"
+              className="bg-gradient-to-r from-primary to-yellow-500 hover:from-yellow-500 hover:to-primary text-black px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300 group"
               onClick={() => router.push("/create-token")}
             >
               <Rocket className="w-4 h-4 group-hover:animate-bounce" />
@@ -52,14 +51,14 @@ export default function HeroBanner() {
             <Button
               variant="outline"
               size="default"
-              className="border border-neutral-600 text-neutral-300 hover:bg-neutral-800/50 px-6 py-2 backdrop-blur-sm transition-all duration-300 group bg-transparent"
+              className="border border-neutral-600 text-neutral-300 hover:bg-neutral-800/50 hover:border-neutral-500 px-6 py-2 backdrop-blur-sm transition-all duration-300 group bg-transparent"
             >
               <Play className="w-4 h-4" />
               Watch Demo
             </Button>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 pt-4 text-xs text-neutral-500 animate-in fade-in slide-in-from-bottom-20 delay-600 duration-1000">
+          <div className="flex flex-wrap justify-center gap-6 pt-4 text-sm text-neutral-500 animate-in fade-in slide-in-from-bottom-20 delay-600 duration-1000">
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
               <span>24/7 Support</span>
