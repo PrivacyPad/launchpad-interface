@@ -28,7 +28,7 @@ export default function WalletButton() {
   return (
     <Button
       className="px-3 py-1.5 min-w-[125px]"
-      color="secondary"
+      variant="secondary"
       onClick={() => appKit.open({ view: "Account", namespace })}
     >
       {/* @ts-ignore */}

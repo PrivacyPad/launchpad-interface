@@ -27,7 +27,22 @@ export default function RootLayout({
             <Header />
             <StatsBar />
             <main className="max-w-320 mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
-            <Toaster duration={5000} position="top-right" richColors closeButton />
+            <Toaster
+              duration={5000}
+              position="top-right"
+              richColors
+              closeButton
+              expand
+              visibleToasts={3}
+              toastOptions={{
+                actionButtonStyle: {
+                  backgroundColor: "#4A90E2",
+                  color: "#FFFFFF",
+                  borderRadius: "4px",
+                  padding: "0.25rem 0.5rem",
+                },
+              }}
+            />
           </Providers>
         </div>
       </body>
