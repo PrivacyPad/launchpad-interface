@@ -1,11 +1,18 @@
+import {
+  ERC20,
+  ERC20__factory,
+  PrivacyPresaleFactory,
+  PrivacyPresaleFactory__factory,
+  TokenFactory,
+  TokenFactory__factory,
+} from "@/web3/contracts";
+import { PRIVACY_PRESALE_FACTORY_ADDRESS, TOKEN_FACTORY_ADDRESS } from "@/web3/core/constants";
 import { BaseContract, Contract, isAddress } from "ethers";
 import { useMemo } from "react";
 import { zeroAddress } from "viem";
 import { useEthersProvider } from "./useEthersProvider";
 import { useEthersSigner } from "./useEthersSigner";
 import useWeb3 from "./useWeb3";
-import { ERC20, ERC20__factory, TokenFactory, TokenFactory__factory } from "@/web3/contracts";
-import { TOKEN_FACTORY_ADDRESS } from "@/web3/core/constants";
 
 // returns null on errors
 export default function useContract<T extends BaseContract = BaseContract>(
@@ -55,4 +62,8 @@ export function useErc20ContractWrite(tokenAddress?: string) {
 
 export function useTokenFactoryContractWrite() {
   return useContract<TokenFactory>(TOKEN_FACTORY_ADDRESS, TokenFactory__factory.abi, true);
+}
+
+export function usePresaleFactoryContractWrite() {
+  return useContract<PrivacyPresaleFactory>(PRIVACY_PRESALE_FACTORY_ADDRESS, PrivacyPresaleFactory__factory.abi, true);
 }

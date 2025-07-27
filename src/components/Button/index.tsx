@@ -1,16 +1,18 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { ButtonProps, Button as UIButton } from "../ui/button";
 
 export interface BaseButtonProps extends ButtonProps {
   loading?: boolean;
   loadingText?: string;
+  icon?: React.ReactNode;
 }
 
-const Button = ({ loading, children, loadingText, ...props }: BaseButtonProps) => {
+const Button = ({ loading, children, loadingText, icon, ...props }: BaseButtonProps) => {
   return (
     <UIButton {...props}>
-      {loading && <span className="loading loading-spinner size-[1.2em]"></span>}
+      {loading ? <Loader2 className="size-[1.2em] animate-spin" /> : icon}
       {loading && loadingText ? loadingText : children}
     </UIButton>
   );

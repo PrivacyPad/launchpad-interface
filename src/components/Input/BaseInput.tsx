@@ -39,7 +39,7 @@ const BaseInput = forwardRef<HTMLInputElement, IBaseInputProps>(function BaseInp
             endIcon ? "pr-10" : "pr-3",
             "w-full",
             props?.className,
-            error ? "border-red-500" : "border-low-emphasis focus:border-primary"
+            error ? "border-red-500" : ""
           )}
         />
         {endIcon && (

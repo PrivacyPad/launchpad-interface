@@ -28,7 +28,7 @@ export default function RootLayout({
             <StatsBar />
             <main className="max-w-320 mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
             <Toaster
-              duration={5000}
+              duration={8000}
               position="top-right"
               richColors
               closeButton
@@ -40,6 +40,9 @@ export default function RootLayout({
                   color: "#FFFFFF",
                   borderRadius: "4px",
                   padding: "0.25rem 0.5rem",
+                },
+                style: {
+                  pointerEvents: "auto",
                 },
               }}
             />
