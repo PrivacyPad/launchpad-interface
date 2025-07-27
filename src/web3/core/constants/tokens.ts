@@ -10,7 +10,7 @@ export const C_WETH9: TokenMap = {
     ChainId.SEPOLIA,
     CONFIDENTIAL_WETH_ADDRESS[ChainId.SEPOLIA],
     9,
-    "cWETH",
+    "CWETH",
     "Confidential WETH"
   ),
 };

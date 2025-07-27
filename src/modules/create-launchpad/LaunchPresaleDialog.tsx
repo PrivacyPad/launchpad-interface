@@ -58,7 +58,7 @@ function Content({
   const { address, chainId } = useWeb3();
   const presaleFactoryContract = usePresaleFactoryContractWrite();
 
-  const cWETH = C_WETH9[chainId as ChainId];
+  const CWETH = C_WETH9[chainId as ChainId];
 
   const [launchStep, setLaunchStep] = useState(1); // 1: Token Approve, 2: Confirmation
   const [deploymentStatus, setDeploymentStatus] = useState("pending"); // pending, loading, success, error
@@ -66,10 +66,10 @@ function Content({
 
   const data = useMemo(() => {
     const tokenAddress = launchpadData.tokenAddress;
-    const softCapInWei = parseUnits(launchpadData.softCap.toString(), cWETH.decimals);
-    const hardCapInWei = parseUnits(launchpadData.hardCap.toString(), cWETH.decimals);
-    const minContributionInWei = parseUnits(launchpadData.minContribution.toString(), cWETH.decimals);
-    const maxContributionInWei = parseUnits(launchpadData.maxContribution.toString(), cWETH.decimals);
+    const softCapInWei = parseUnits(launchpadData.softCap.toString(), CWETH.decimals);
+    const hardCapInWei = parseUnits(launchpadData.hardCap.toString(), CWETH.decimals);
+    const minContributionInWei = parseUnits(launchpadData.minContribution.toString(), CWETH.decimals);
+    const maxContributionInWei = parseUnits(launchpadData.maxContribution.toString(), CWETH.decimals);
     const startTime = Math.floor(launchpadData.startDate.getTime() / 1000); // Convert to seconds
     const endTime = Math.floor(launchpadData.endDate.getTime() / 1000); // Convert to seconds
 
@@ -101,7 +101,7 @@ function Content({
       presaleRate: launchpadData.presaleRate,
       listingRate: launchpadData.listingRate,
     };
-  }, [erc20Info, launchpadData, cWETH]);
+  }, [erc20Info, launchpadData, CWETH]);
 
   const currency = useMemo(() => {
     return new Token(ChainId.SEPOLIA, erc20Info.address, erc20Info.decimals, erc20Info.symbol, erc20Info.name);
@@ -265,19 +265,19 @@ function Content({
               <div className="flex justify-between">
                 <span className="text-neutral-400">Soft Cap:</span>
                 <span className="text-white font-mono">
-                  {formatNumber(launchpadData.softCap, { fractionDigits: 6 }) || "0"} cWETH
+                  {formatNumber(launchpadData.softCap, { fractionDigits: 6 }) || "0"} CWETH
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-400">Hard Cap:</span>
                 <span className="text-white font-mono">
-                  {formatNumber(launchpadData.hardCap, { fractionDigits: 6 }) || "0"} cWETH
+                  {formatNumber(launchpadData.hardCap, { fractionDigits: 6 }) || "0"} CWETH
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-400">Presale Rate:</span>
                 <span className="text-white font-mono">
-                  {formatNumber(launchpadData.presaleRate, { fractionDigits: 6 }) || "0"} {erc20Info.symbol}/cWETH
+                  {formatNumber(launchpadData.presaleRate, { fractionDigits: 6 }) || "0"} {erc20Info.symbol}/CWETH
                 </span>
               </div>
               <div className="flex justify-between">

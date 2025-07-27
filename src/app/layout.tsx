@@ -5,6 +5,7 @@ import { generateMetadata } from "@/utils/seo";
 import StatsBar from "./components/StatsBar";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/sonner";
+import Modals from "@/components/modals/Modals";
 
 export const metadata: Metadata = {
   ...generateMetadata(),
@@ -27,6 +28,7 @@ export default function RootLayout({
             <Header />
             <StatsBar />
             <main className="max-w-320 mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
+            <Modals />
             <Toaster
               duration={8000}
               position="top-right"
