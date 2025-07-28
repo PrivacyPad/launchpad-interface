@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
-import Header from "./components/Header";
-import "./globals.css";
-import { generateMetadata } from "@/utils/seo";
-import StatsBar from "./components/StatsBar";
+import Modals from "@/components/modals/Modals";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/sonner";
-import Modals from "@/components/modals/Modals";
+import { generateMetadata } from "@/utils/seo";
+import type { Metadata } from "next";
+import Script from "next/script";
+import Header from "./components/Header";
+import StatsBar from "./components/StatsBar";
+import "./globals.css";
 
 export const metadata: Metadata = {
   ...generateMetadata(),
@@ -50,6 +51,11 @@ export default function RootLayout({
             />
           </Providers>
         </div>
+        <Script
+          src="https://cdn.zama.ai/relayer-sdk-js/0.1.0-9/relayer-sdk-js.umd.cjs"
+          type="text/javascript"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );

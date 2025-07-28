@@ -1,15 +1,28 @@
 import Input from "@/components/Input";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
+import { useConfidentialWETHContractWrite } from "@/hooks/useContract";
+import useWeb3 from "@/hooks/useWeb3";
+import { toastTxSuccess } from "@/lib/toast";
+import { getExplorerLink } from "@/web3/core/functions/explorer";
+import BigNumber from "bignumber.js";
 import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { parseEther } from "viem";
+import { useBalance } from "wagmi";
 
 export default function WrapTabContent() {
+  const { address, chainId } = useWeb3();
+  const { data: ethBalance, refetch: refetchEthBalance } = useBalance({
+    address: address,
+  });
+
+  const cWETHContract = useConfidentialWETHContractWrite();
+
+  const [transactionHash, setTransactionHash] = useState("0xabc");
   const [wrapAmount, setWrapAmount] = useState("");
   const [wrapStatus, setWrapStatus] = useState("pending"); // pending, loading, success, error
-  const [transactionHash, setTransactionHash] = useState("");
-  const [ethBalance, setEthBalance] = useState("2.5847");
-  const [cwethBalance, setCwethBalance] = useState("0.0000");
 
   const handleWrapETH = async () => {
     if (!wrapAmount || Number.parseFloat(wrapAmount) <= 0) return;
@@ -18,28 +31,35 @@ export default function WrapTabContent() {
 
     try {
       // Simulate wrapping process
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      setTransactionHash("0xabcdef1234567890abcdef1234567890abcdef12");
+      if (!cWETHContract) {
+        throw new Error("cWETH contract not available");
+      }
+      if (!address) {
+        throw new Error("Wallet address not connected");
+      }
+      const tx = await cWETHContract.deposit(address, {
+        value: parseEther(new BigNumber(wrapAmount).toFixed(9, BigNumber.ROUND_DOWN)),
+      });
+      await tx.wait();
+      toastTxSuccess("ETH Wrapped Successfully!", tx.hash);
+      setTransactionHash(tx.hash);
       setWrapStatus("success");
-
-      // Update balances
-      const wrapAmountNum = Number.parseFloat(wrapAmount);
-      setEthBalance((prev) => (Number.parseFloat(prev) - wrapAmountNum).toFixed(4));
-      setCwethBalance((prev) => (Number.parseFloat(prev) + wrapAmountNum).toFixed(4));
+      refetchEthBalance();
     } catch (error) {
       setWrapStatus("error");
+      toast.error("Wrapping failed. Please try again.");
+      console.error("Wrap error:", error);
     }
   };
 
-  const setMaxAmount = (isWrap: boolean) => {
-    if (isWrap) {
-      // Leave some ETH for gas fees
-      const maxWrap = Math.max(0, Number.parseFloat(ethBalance) - 0.01);
-      setWrapAmount(maxWrap.toFixed(4));
-    } else {
-      setWrapAmount(cwethBalance);
-    }
+  const setMaxAmount = () => {
+    const maxAmountCanWrap = new BigNumber(ethBalance?.formatted || "0").minus(0.01).toFixed(); // Leave some ETH for gas fees
+    setWrapAmount(maxAmountCanWrap);
   };
+
+  const receiveAmount = wrapAmount
+    ? new BigNumber(wrapAmount).toFixed(9, BigNumber.ROUND_DOWN).replace(/\.?0+$/, "")
+    : "0";
 
   return (
     <TabsContent value="wrap" className="space-y-4">
@@ -48,7 +68,7 @@ export default function WrapTabContent() {
           <span className="text-sm text-neutral-400">Amount to Wrap</span>
           <Button
             variant="link"
-            onClick={() => setMaxAmount(true)}
+            onClick={setMaxAmount}
             className="text-primary text-xs p-0 h-auto hover:text-yellow-500"
           >
             MAX
@@ -67,7 +87,7 @@ export default function WrapTabContent() {
           </div>
         </div>
         <div className="text-xs text-neutral-400 mt-2">
-          You will receive: <span className="text-primary font-mono">{wrapAmount || "0.0"} cWETH</span>
+          You will receive: <span className="text-primary font-mono">{receiveAmount} cWETH</span>
         </div>
       </div>
 
@@ -86,9 +106,16 @@ export default function WrapTabContent() {
             <CheckCircle className="w-4 h-4 text-green-400" />
             <span className="text-sm text-green-400 font-medium">ETH Wrapped Successfully!</span>
           </div>
-          <div className="text-xs text-neutral-400">
+          <div className="text-xs text-neutral-400 break-all">
             Transaction:
-            <code className="ml-1 text-green-400 font-mono text-xs">{transactionHash}</code>
+            <a
+              href={getExplorerLink(chainId, transactionHash, "transaction")}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-1 text-green-400 font-mono text-xs underline hover:text-green-300"
+            >
+              {transactionHash}
+            </a>
           </div>
         </div>
       )}

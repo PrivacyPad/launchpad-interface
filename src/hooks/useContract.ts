@@ -1,4 +1,6 @@
 import {
+  ConfidentialWETH,
+  ConfidentialWETH__factory,
   ERC20,
   ERC20__factory,
   PrivacyPresaleFactory,
@@ -6,7 +8,11 @@ import {
   TokenFactory,
   TokenFactory__factory,
 } from "@/web3/contracts";
-import { PRIVACY_PRESALE_FACTORY_ADDRESS, TOKEN_FACTORY_ADDRESS } from "@/web3/core/constants";
+import {
+  CONFIDENTIAL_WETH_ADDRESS,
+  PRIVACY_PRESALE_FACTORY_ADDRESS,
+  TOKEN_FACTORY_ADDRESS,
+} from "@/web3/core/constants";
 import { BaseContract, Contract, isAddress } from "ethers";
 import { useMemo } from "react";
 import { zeroAddress } from "viem";
@@ -66,4 +72,8 @@ export function useTokenFactoryContractWrite() {
 
 export function usePresaleFactoryContractWrite() {
   return useContract<PrivacyPresaleFactory>(PRIVACY_PRESALE_FACTORY_ADDRESS, PrivacyPresaleFactory__factory.abi, true);
+}
+
+export function useConfidentialWETHContractWrite() {
+  return useContract<ConfidentialWETH>(CONFIDENTIAL_WETH_ADDRESS, ConfidentialWETH__factory.abi, true);
 }
