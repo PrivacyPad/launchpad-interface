@@ -56,7 +56,7 @@ export default function Header() {
             >
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span>CWETH</span>
+                <span>cWETH</span>
               </div>
             </Button>
           </div>

@@ -265,19 +265,20 @@ function Content({
               <div className="flex justify-between">
                 <span className="text-neutral-400">Soft Cap:</span>
                 <span className="text-white font-mono">
-                  {formatNumber(launchpadData.softCap, { fractionDigits: 6 }) || "0"} CWETH
+                  {formatNumber(launchpadData.softCap, { fractionDigits: 6 }) || "0"} {CWETH.symbol}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-400">Hard Cap:</span>
                 <span className="text-white font-mono">
-                  {formatNumber(launchpadData.hardCap, { fractionDigits: 6 }) || "0"} CWETH
+                  {formatNumber(launchpadData.hardCap, { fractionDigits: 6 }) || "0"} {CWETH.symbol}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-400">Presale Rate:</span>
                 <span className="text-white font-mono">
-                  {formatNumber(launchpadData.presaleRate, { fractionDigits: 6 }) || "0"} {erc20Info.symbol}/CWETH
+                  {formatNumber(launchpadData.presaleRate, { fractionDigits: 6 }) || "0"} {erc20Info.symbol}/
+                  {CWETH.symbol}
                 </span>
               </div>
               <div className="flex justify-between">

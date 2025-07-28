@@ -67,16 +67,16 @@ export default function WrapTabContent() {
           </div>
         </div>
         <div className="text-xs text-neutral-400 mt-2">
-          You will receive: <span className="text-primary font-mono">{wrapAmount || "0.0"} CWETH</span>
+          You will receive: <span className="text-primary font-mono">{wrapAmount || "0.0"} cWETH</span>
         </div>
       </div>
 
       <div className="bg-primary/10 border border-primary/30 p-3">
-        <div className="text-xs text-primary mb-1">ℹ️ About CWETH</div>
+        <div className="text-xs text-primary mb-1">ℹ️ About cWETH</div>
         <div className="text-xs text-neutral-300">
-          CWETH is the confidential WETH token. It is a wrapped version of ETH that enables private transactions and can
+          cWETH is the confidential WETH token. It is a wrapped version of ETH that enables private transactions and can
           be used in DeFi protocols.
-          <br />1 ETH = 1 CWETH always.
+          <br />1 ETH = 1 cWETH always.
         </div>
       </div>
 
@@ -113,7 +113,7 @@ export default function WrapTabContent() {
             Wrapping...
           </>
         ) : (
-          "Wrap ETH to CWETH"
+          "Wrap ETH to cWETH"
         )}
       </Button>
     </TabsContent>

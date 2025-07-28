@@ -154,7 +154,7 @@ export default function CreateLaunchpadView() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="presaleRate" className="text-xs text-neutral-400 tracking-wider">
-                        PRESALE RATE (tokens per CWETH)
+                        PRESALE RATE (tokens per cWETH)
                       </Label>
                       <Input.Number
                         id="presaleRate"
@@ -169,7 +169,7 @@ export default function CreateLaunchpadView() {
 
                     <div className="space-y-2">
                       <Label htmlFor="listingRate" className="text-xs text-neutral-400 tracking-wider">
-                        LISTING RATE (tokens per CWETH)
+                        LISTING RATE (tokens per cWETH)
                       </Label>
                       <Input.Number
                         id="listingRate"
@@ -186,7 +186,7 @@ export default function CreateLaunchpadView() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="softCap" className="text-xs text-neutral-400 tracking-wider">
-                        SOFT CAP (CWETH)
+                        SOFT CAP (cWETH)
                       </Label>
                       <Input.Number
                         id="softCap"
@@ -201,7 +201,7 @@ export default function CreateLaunchpadView() {
 
                     <div className="space-y-2">
                       <Label htmlFor="hardCap" className="text-xs text-neutral-400 tracking-wider">
-                        HARD CAP (CWETH)
+                        HARD CAP (cWETH)
                       </Label>
                       <Input.Number
                         id="hardCap"
@@ -218,7 +218,7 @@ export default function CreateLaunchpadView() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="minContribution" className="text-xs text-neutral-400 tracking-wider">
-                        MIN CONTRIBUTION (CWETH)
+                        MIN CONTRIBUTION (cWETH)
                       </Label>
                       <Input.Number
                         id="minContribution"
@@ -233,7 +233,7 @@ export default function CreateLaunchpadView() {
 
                     <div className="space-y-2">
                       <Label htmlFor="maxContribution" className="text-xs text-neutral-400 tracking-wider">
-                        MAX CONTRIBUTION (CWETH)
+                        MAX CONTRIBUTION (cWETH)
                       </Label>
                       <Input.Number
                         id="maxContribution"

@@ -62,7 +62,7 @@ export default function UnWrapTabContent() {
             className="bg-neutral-700 border-neutral-600 text-white text-right pr-20 text-lg font-mono"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2">
-            <span className="text-sm text-primary font-medium">CWETH</span>
+            <span className="text-sm text-primary font-medium">cWETH</span>
           </div>
         </div>
         <div className="text-xs text-neutral-400 mt-2">
@@ -81,7 +81,7 @@ export default function UnWrapTabContent() {
         <div className="bg-green-500/10 border border-green-500/30 p-3">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-green-400 font-medium">CWETH Unwrapped Successfully!</span>
+            <span className="text-sm text-green-400 font-medium">cWETH Unwrapped Successfully!</span>
           </div>
           <div className="text-xs text-neutral-400">
             Transaction:
@@ -115,7 +115,7 @@ export default function UnWrapTabContent() {
             Unwrapping...
           </>
         ) : (
-          "Unwrap CWETH to ETH"
+          "Unwrap cWETH to ETH"
         )}
       </Button>
     </TabsContent>

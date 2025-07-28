@@ -19,7 +19,7 @@ export default function CwethWrapModal() {
             <div className="w-8 h-8 bg-gradient-to-r from-primary to-yellow-500 rounded-full flex items-center justify-center">
               <ArrowUpDown className="w-4 h-4 text-white" />
             </div>
-            CWETH WRAPPER
+            cWETH WRAPPER
           </DialogTitle>
         </DialogHeader>
 
@@ -31,7 +31,7 @@ export default function CwethWrapModal() {
               <div className="text-lg font-bold text-white font-mono">{ethBalance}</div>
             </div>
             <div className="bg-neutral-800 rounded-xs p-3">
-              <div className="text-xs text-neutral-400 mb-1">CWETH BALANCE</div>
+              <div className="text-xs text-neutral-400 mb-1">cWETH BALANCE</div>
               <div className="text-lg font-bold text-primary font-mono">{cwethBalance}</div>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default function CwethWrapModal() {
                 Wrap ETH
               </TabsTrigger>
               <TabsTrigger value="unwrap" className="data-[state=active]:bg-primary data-[state=active]:text-black">
-                Unwrap CWETH
+                Unwrap cWETH
               </TabsTrigger>
             </TabsList>
 
