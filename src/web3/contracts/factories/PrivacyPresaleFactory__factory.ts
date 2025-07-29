@@ -16,11 +16,6 @@ const _abi = [
         name: "_cweth",
         type: "address",
       },
-      {
-        internalType: "address",
-        name: "_uniswapV2Router02",
-        type: "address",
-      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -61,12 +56,6 @@ const _abi = [
         indexed: false,
         internalType: "address",
         name: "ctoken",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "address",
-        name: "uniswapV2Router02",
         type: "address",
       },
       {
@@ -115,6 +104,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "tokenPresale",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "liquidityPercentage",
             type: "uint256",
           },
           {
@@ -181,6 +175,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "tokenPresale",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "liquidityPercentage",
             type: "uint256",
           },
           {
@@ -292,19 +291,6 @@ const _abi = [
       },
     ],
     name: "presalesByCreator",
-    outputs: [
-      {
-        internalType: "address",
-        name: "",
-        type: "address",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "uniswapV2Router02",
     outputs: [
       {
         internalType: "address",

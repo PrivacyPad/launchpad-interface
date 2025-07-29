@@ -11,6 +11,7 @@ export const C_WETH9: TokenMap = {
     CONFIDENTIAL_WETH_ADDRESS[ChainId.SEPOLIA],
     9,
     "cWETH",
-    "Confidential WETH"
+    "Confidential WETH",
+    "/images/empty-token.webp"
   ),
 };

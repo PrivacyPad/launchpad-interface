@@ -1,8 +1,12 @@
 import {
+  ConfidentialFungibleToken,
+  ConfidentialFungibleToken__factory,
   ConfidentialWETH,
   ConfidentialWETH__factory,
   ERC20,
   ERC20__factory,
+  PrivacyPresale,
+  PrivacyPresale__factory,
   PrivacyPresaleFactory,
   PrivacyPresaleFactory__factory,
   TokenFactory,
@@ -66,6 +70,14 @@ export function useErc20ContractWrite(tokenAddress?: string) {
   return useContract<ERC20>(tokenAddress, ERC20__factory.abi, true);
 }
 
+export function useConfidentialFungibleTokenContractRead(tokenAddress?: string) {
+  return useContract<ConfidentialFungibleToken>(tokenAddress, ConfidentialFungibleToken__factory.abi, false);
+}
+
+export function useConfidentialFungibleTokenContractWrite(tokenAddress?: string) {
+  return useContract<ConfidentialFungibleToken>(tokenAddress, ConfidentialFungibleToken__factory.abi, true);
+}
+
 export function useTokenFactoryContractWrite() {
   return useContract<TokenFactory>(TOKEN_FACTORY_ADDRESS, TokenFactory__factory.abi, true);
 }
@@ -76,4 +88,8 @@ export function usePresaleFactoryContractWrite() {
 
 export function useConfidentialWETHContractWrite() {
   return useContract<ConfidentialWETH>(CONFIDENTIAL_WETH_ADDRESS, ConfidentialWETH__factory.abi, true);
+}
+
+export function usePrivacyPresaleContractWrite(presaleAddress?: string) {
+  return useContract<PrivacyPresale>(presaleAddress, PrivacyPresale__factory.abi, true);
 }

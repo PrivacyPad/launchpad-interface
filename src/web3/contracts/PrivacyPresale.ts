@@ -27,6 +27,7 @@ export declare namespace PrivacyPresale {
   export type PresaleOptionsStruct = {
     tokenAddLiquidity: BigNumberish;
     tokenPresale: BigNumberish;
+    liquidityPercentage: BigNumberish;
     hardCap: BigNumberish;
     softCap: BigNumberish;
     start: BigNumberish;
@@ -36,6 +37,7 @@ export declare namespace PrivacyPresale {
   export type PresaleOptionsStructOutput = [
     tokenAddLiquidity: bigint,
     tokenPresale: bigint,
+    liquidityPercentage: bigint,
     hardCap: bigint,
     softCap: bigint,
     start: bigint,
@@ -43,6 +45,7 @@ export declare namespace PrivacyPresale {
   ] & {
     tokenAddLiquidity: bigint;
     tokenPresale: bigint;
+    liquidityPercentage: bigint;
     hardCap: bigint;
     softCap: bigint;
     start: bigint;
@@ -53,11 +56,13 @@ export declare namespace PrivacyPresale {
 export interface PrivacyPresaleInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "addLiquidity"
       | "claimTokens"
       | "claimableTokens"
       | "claimed"
       | "contributions"
       | "finalizePreSale"
+      | "onERC721Received"
       | "owner"
       | "pool"
       | "purchase"
@@ -82,6 +87,10 @@ export interface PrivacyPresaleInterface extends Interface {
   ): EventFragment;
 
   encodeFunctionData(
+    functionFragment: "addLiquidity",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "claimTokens",
     values: [AddressLike]
   ): string;
@@ -100,6 +109,10 @@ export interface PrivacyPresaleInterface extends Interface {
   encodeFunctionData(
     functionFragment: "finalizePreSale",
     values: [BigNumberish, BigNumberish, BigNumberish, BytesLike[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "onERC721Received",
+    values: [AddressLike, AddressLike, BigNumberish, BytesLike]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(functionFragment: "pool", values?: undefined): string;
@@ -126,6 +139,10 @@ export interface PrivacyPresaleInterface extends Interface {
   ): string;
 
   decodeFunctionResult(
+    functionFragment: "addLiquidity",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "claimTokens",
     data: BytesLike
   ): Result;
@@ -140,6 +157,10 @@ export interface PrivacyPresaleInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "finalizePreSale",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "onERC721Received",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
@@ -374,6 +395,8 @@ export interface PrivacyPresale extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  addLiquidity: TypedContractMethod<[], [void], "nonpayable">;
+
   claimTokens: TypedContractMethod<
     [beneficiary: AddressLike],
     [void],
@@ -397,6 +420,12 @@ export interface PrivacyPresale extends BaseContract {
     "nonpayable"
   >;
 
+  onERC721Received: TypedContractMethod<
+    [arg0: AddressLike, arg1: AddressLike, arg2: BigNumberish, arg3: BytesLike],
+    [string],
+    "view"
+  >;
+
   owner: TypedContractMethod<[], [string], "view">;
 
   pool: TypedContractMethod<
@@ -418,7 +447,7 @@ export interface PrivacyPresale extends BaseContract {
       ] & {
         token: string;
         ctoken: string;
-        uniswapV2Router02: string;
+        dex: string;
         tokenBalance: bigint;
         tokensSoldEncrypted: string;
         tokensSold: bigint;
@@ -462,6 +491,9 @@ export interface PrivacyPresale extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "addLiquidity"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "claimTokens"
   ): TypedContractMethod<[beneficiary: AddressLike], [void], "nonpayable">;
   getFunction(
@@ -484,6 +516,13 @@ export interface PrivacyPresale extends BaseContract {
     ],
     [void],
     "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "onERC721Received"
+  ): TypedContractMethod<
+    [arg0: AddressLike, arg1: AddressLike, arg2: BigNumberish, arg3: BytesLike],
+    [string],
+    "view"
   >;
   getFunction(
     nameOrSignature: "owner"
@@ -509,7 +548,7 @@ export interface PrivacyPresale extends BaseContract {
       ] & {
         token: string;
         ctoken: string;
-        uniswapV2Router02: string;
+        dex: string;
         tokenBalance: bigint;
         tokensSoldEncrypted: string;
         tokensSold: bigint;

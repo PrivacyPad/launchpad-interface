@@ -27,6 +27,7 @@ export declare namespace PrivacyPresale {
   export type PresaleOptionsStruct = {
     tokenAddLiquidity: BigNumberish;
     tokenPresale: BigNumberish;
+    liquidityPercentage: BigNumberish;
     hardCap: BigNumberish;
     softCap: BigNumberish;
     start: BigNumberish;
@@ -36,6 +37,7 @@ export declare namespace PrivacyPresale {
   export type PresaleOptionsStructOutput = [
     tokenAddLiquidity: bigint,
     tokenPresale: bigint,
+    liquidityPercentage: bigint,
     hardCap: bigint,
     softCap: bigint,
     start: bigint,
@@ -43,6 +45,7 @@ export declare namespace PrivacyPresale {
   ] & {
     tokenAddLiquidity: bigint;
     tokenPresale: bigint;
+    liquidityPercentage: bigint;
     hardCap: bigint;
     softCap: bigint;
     start: bigint;
@@ -61,7 +64,6 @@ export interface PrivacyPresaleFactoryInterface extends Interface {
       | "getPresalesByCreator"
       | "getPresalesCount"
       | "presalesByCreator"
-      | "uniswapV2Router02"
   ): FunctionFragment;
 
   getEvent(nameOrSignatureOrTopic: "PrivacyPresaleCreated"): EventFragment;
@@ -95,10 +97,6 @@ export interface PrivacyPresaleFactoryInterface extends Interface {
     functionFragment: "presalesByCreator",
     values: [AddressLike, BigNumberish]
   ): string;
-  encodeFunctionData(
-    functionFragment: "uniswapV2Router02",
-    values?: undefined
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "allPresales",
@@ -129,10 +127,6 @@ export interface PrivacyPresaleFactoryInterface extends Interface {
     functionFragment: "presalesByCreator",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "uniswapV2Router02",
-    data: BytesLike
-  ): Result;
 }
 
 export namespace PrivacyPresaleCreatedEvent {
@@ -141,7 +135,6 @@ export namespace PrivacyPresaleCreatedEvent {
     presale: AddressLike,
     token: AddressLike,
     ctoken: AddressLike,
-    uniswapV2Router02: AddressLike,
     cweth: AddressLike
   ];
   export type OutputTuple = [
@@ -149,7 +142,6 @@ export namespace PrivacyPresaleCreatedEvent {
     presale: string,
     token: string,
     ctoken: string,
-    uniswapV2Router02: string,
     cweth: string
   ];
   export interface OutputObject {
@@ -157,7 +149,6 @@ export namespace PrivacyPresaleCreatedEvent {
     presale: string;
     token: string;
     ctoken: string;
-    uniswapV2Router02: string;
     cweth: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
@@ -246,8 +237,6 @@ export interface PrivacyPresaleFactory extends BaseContract {
     "view"
   >;
 
-  uniswapV2Router02: TypedContractMethod<[], [string], "view">;
-
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
   ): T;
@@ -293,9 +282,6 @@ export interface PrivacyPresaleFactory extends BaseContract {
     [string],
     "view"
   >;
-  getFunction(
-    nameOrSignature: "uniswapV2Router02"
-  ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
     key: "PrivacyPresaleCreated"
@@ -306,7 +292,7 @@ export interface PrivacyPresaleFactory extends BaseContract {
   >;
 
   filters: {
-    "PrivacyPresaleCreated(address,address,address,address,address,address)": TypedContractEvent<
+    "PrivacyPresaleCreated(address,address,address,address,address)": TypedContractEvent<
       PrivacyPresaleCreatedEvent.InputTuple,
       PrivacyPresaleCreatedEvent.OutputTuple,
       PrivacyPresaleCreatedEvent.OutputObject

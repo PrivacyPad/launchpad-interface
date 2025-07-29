@@ -1,6 +1,8 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Check, Copy, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { ButtonProps, Button as UIButton } from "../ui/button";
 
 export interface BaseButtonProps extends ButtonProps {
@@ -18,3 +20,32 @@ const Button = ({ loading, children, loadingText, icon, ...props }: BaseButtonPr
   );
 };
 export default Button;
+
+export const CopyButton = ({ text, ...props }: ButtonProps & { text: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1000); // Reset after 1 second
+      toast.success("Copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+      toast.error("Failed to copy to clipboard. Please try again.");
+    }
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      {...props}
+      onClick={() => {
+        copyToClipboard(text);
+      }}
+    >
+      {copied ? <Check className="size-[1em]" /> : <Copy className="size-[1em]" />}
+    </Button>
+  );
+};

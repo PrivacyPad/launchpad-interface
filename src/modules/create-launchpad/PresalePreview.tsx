@@ -1,7 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistance } from "date-fns";
-import { Clock, DollarSign, Rocket, Target } from "lucide-react";
-import React from "react";
+import { Clock, DollarSign, Lock, Rocket, Target } from "lucide-react";
 
 export default function PresalePreview({
   launchpadData,
@@ -13,6 +12,7 @@ export default function PresalePreview({
     hardCap?: number;
     startDate?: Date;
     endDate?: Date;
+    liquidityLockup?: number;
   };
 }) {
   return (
@@ -50,6 +50,11 @@ export default function PresalePreview({
                   })
                 : "Not set"}
             </span>
+          </div>
+          <div className="flex items-center gap-2 text-sm">
+            <Lock className="w-4 h-4 text-primary" />
+            <span className="text-neutral-400">Liquidity Lock:</span>
+            <span className="text-white">{launchpadData?.liquidityLockup || 0} days</span>
           </div>
         </div>
       </CardContent>

@@ -4,10 +4,12 @@ import { MaxUint256 } from "@/web3/core/constants";
 import { Currency, Token } from "@/web3/core/entities";
 import { calculateGasMargin } from "@/web3/core/functions/trade";
 
+import { OPERATOR_EXPIRY_OFFSET } from "@/configs/zama.config";
+import { ConfidentialFungibleToken__factory } from "@/web3/contracts";
 import { Addressable, ContractTransactionReceipt } from "ethers";
 import { erc20Abi } from "viem";
 import { useReadContract } from "wagmi";
-import { useErc20ContractWrite } from "./useContract";
+import { useConfidentialFungibleTokenContractWrite, useErc20ContractWrite } from "./useContract";
 import useWeb3 from "./useWeb3";
 
 export enum ApprovalState {
@@ -24,6 +26,20 @@ export function useTokenAllowance(token?: Token, owner?: string, spender?: strin
     abi: erc20Abi,
     address: token?.address as any,
     functionName: "allowance",
+    args: args as any,
+    query: {
+      enabled: Boolean(owner && token),
+    },
+  });
+}
+
+export function useConfidentialTokenApproval(token?: Token, owner?: string, spender?: string | Addressable) {
+  const args = useMemo(() => [owner, spender], [owner, spender]);
+
+  return useReadContract({
+    abi: ConfidentialFungibleToken__factory.abi,
+    address: token?.address as any,
+    functionName: "isOperator",
     args: args as any,
     query: {
       enabled: Boolean(owner && token),
@@ -123,6 +139,87 @@ export default function useApproveCallback({
     setApproving(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [approvalState, token, tokenContract, amountToApprove, spender]);
+
+  return [approvalState, approve];
+}
+
+export function useConfidentialApproveCallback({
+  currency,
+  spender,
+  onReceipt = () => {},
+  onError = () => {},
+}: Pick<IUseApproveCallbackProps, "currency" | "spender" | "onReceipt" | "onError">): [
+  ApprovalState,
+  () => Promise<void>,
+] {
+  const { address } = useWeb3();
+
+  const token = currency?.isToken ? currency : undefined;
+  const { data: isOperator, refetch: isOperatorRefetch } = useConfidentialTokenApproval(
+    token,
+    address ?? undefined,
+    spender as string | Addressable
+  );
+
+  const [approving, setApproving] = useState<boolean>(false);
+
+  // check the current approval status
+  const approvalState: ApprovalState = useMemo(() => {
+    if (!spender || !currency) return ApprovalState.UNKNOWN;
+    if (currency.isNative || isOperator) return ApprovalState.APPROVED;
+
+    // amountToApprove will be defined if currentAllowance is
+    return approving ? ApprovalState.PENDING : ApprovalState.NOT_APPROVED;
+  }, [spender, currency, isOperator, approving]);
+
+  const tokenContract = useConfidentialFungibleTokenContractWrite(token?.address);
+
+  const approve = useCallback(async () => {
+    if (approvalState !== ApprovalState.NOT_APPROVED) {
+      console.error("approve was called unnecessarily");
+      return;
+    }
+    if (!token) {
+      console.error("no token");
+      return;
+    }
+
+    if (!tokenContract) {
+      console.error("tokenContract is null");
+      return;
+    }
+
+    if (!spender) {
+      console.error("no spender");
+      return;
+    }
+
+    setApproving(true);
+
+    try {
+      const until = Math.floor(Date.now() / 1000) + OPERATOR_EXPIRY_OFFSET;
+      const estimatedGas = await tokenContract.setOperator.estimateGas(spender, until);
+
+      const res = await tokenContract
+        .setOperator(spender, until, {
+          gasLimit: calculateGasMargin(estimatedGas),
+        })
+        .catch((error: Error) => {
+          console.debug("Failed to approve token", error);
+          setApproving(false);
+          throw error;
+        });
+
+      const tx = await res.wait();
+      onReceipt(tx);
+      isOperatorRefetch();
+    } catch (error) {
+      onError(error as Error);
+    }
+
+    setApproving(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [approvalState, token, tokenContract, spender]);
 
   return [approvalState, approve];
 }

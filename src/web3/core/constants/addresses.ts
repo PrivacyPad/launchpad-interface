@@ -14,5 +14,5 @@ export const CONFIDENTIAL_WETH_ADDRESS: AddressMap = {
 };
 
 export const PRIVACY_PRESALE_FACTORY_ADDRESS: AddressMap = {
-  [ChainId.SEPOLIA]: "0xBa7ba82008Cfc5cEb43aBA99730be8318762a3f4",
+  [ChainId.SEPOLIA]: "0x9Ad670eeAe451Ec3d75Ee9Ec797Dd6cf988aF723",
 };

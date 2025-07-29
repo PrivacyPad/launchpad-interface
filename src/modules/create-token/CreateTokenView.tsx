@@ -154,8 +154,9 @@ export default function CreateTokenView() {
             type="submit"
             loading={formState.isSubmitting}
             disabled={!formState.isValid || formState.isValidating || formState.isLoading || formState.isSubmitting}
+            loadingText="Deploying..."
+            icon={<Zap className="w-4 h-4" />}
           >
-            {!formState.isSubmitting && <Zap className="w-4 h-4" />}
             Deploy Token
           </Button>
         </div>

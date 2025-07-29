@@ -5,11 +5,6 @@
         "internalType": "address",
         "name": "_cweth",
         "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_uniswapV2Router02",
-        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -51,12 +46,6 @@
         "indexed": false,
         "internalType": "address",
         "name": "ctoken",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "uniswapV2Router02",
         "type": "address"
       },
       {
@@ -105,6 +94,11 @@
           {
             "internalType": "uint256",
             "name": "tokenPresale",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "liquidityPercentage",
             "type": "uint256"
           },
           {
@@ -171,6 +165,11 @@
           {
             "internalType": "uint256",
             "name": "tokenPresale",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "liquidityPercentage",
             "type": "uint256"
           },
           {
@@ -282,19 +281,6 @@
       }
     ],
     "name": "presalesByCreator",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "uniswapV2Router02",
     "outputs": [
       {
         "internalType": "address",

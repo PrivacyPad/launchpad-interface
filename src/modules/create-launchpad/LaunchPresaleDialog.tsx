@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { formatNumber } from "@/utils/format";
 import { C_WETH9, ChainId } from "@/web3/core/constants";
 import { Token } from "@/web3/core/entities";
+import { getExplorerLink } from "@/web3/core/functions/explorer";
 import { DialogProps } from "@radix-ui/react-dialog";
 import BigNumber from "bignumber.js";
 import { AlertCircle, CheckCircle } from "lucide-react";
@@ -16,6 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatUnits, parseUnits } from "viem";
 import { FormData } from "./helpers";
+import { getErrorMessage } from "@/utils/error";
 
 export default function LaunchPresaleDialog({
   onOpenChange,
@@ -72,6 +74,7 @@ function Content({
     const maxContributionInWei = parseUnits(launchpadData.maxContribution.toString(), CWETH.decimals);
     const startTime = Math.floor(launchpadData.startDate.getTime() / 1000); // Convert to seconds
     const endTime = Math.floor(launchpadData.endDate.getTime() / 1000); // Convert to seconds
+    const liquidityPercent = parseUnits(launchpadData.liquidityPercent.toString(), 2); // Convert percentage to decimal
 
     const tokenForPresale = BigInt(
       new BigNumber(launchpadData.hardCap)
@@ -100,6 +103,7 @@ function Content({
       totalTokens: tokenForPresale + tokenAddLiquidity,
       presaleRate: launchpadData.presaleRate,
       listingRate: launchpadData.listingRate,
+      liquidityPercent,
     };
   }, [erc20Info, launchpadData, CWETH]);
 
@@ -147,6 +151,7 @@ function Content({
         softCap: data.softCap,
         start: data.startTime,
         end: data.endTime,
+        liquidityPercentage: data.liquidityPercent,
       });
       await tx.wait();
       toastTxSuccess("Launchpad created successfully!", tx.hash);
@@ -154,7 +159,7 @@ function Content({
       setDeploymentStatus("success");
     } catch (error) {
       console.error("Error submitting launchpad data:", error);
-      toast.error("Failed to create launchpad. Please check the form and try again.");
+      toast.error("Failed to create launchpad", { description: getErrorMessage(error) });
       setDeploymentStatus("error");
     }
   };
@@ -283,7 +288,7 @@ function Content({
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-400">Platform Fee:</span>
-                <span className="text-white font-mono">4%</span>
+                <span className="text-white font-mono">0%</span>
               </div>
             </div>
           </div>
@@ -294,9 +299,16 @@ function Content({
                 <CheckCircle className="w-4 h-4 text-green-400" />
                 <span className="text-sm text-green-400 font-medium">Presale Launched Successfully!</span>
               </div>
-              <div className="text-xs text-neutral-400 word-break-all">
+              <div className="text-xs text-neutral-400 break-all">
                 Transaction:
-                <span className="ml-1 text-green-400 font-mono">{transactionHash}</span>
+                <a
+                  href={getExplorerLink(chainId, transactionHash, "transaction")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-1 text-green-400 font-mono text-xs underline hover:text-green-300"
+                >
+                  {transactionHash}
+                </a>
               </div>
             </div>
           )}

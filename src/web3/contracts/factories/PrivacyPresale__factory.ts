@@ -32,11 +32,6 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "address",
-        name: "_uniswapV2Router02",
-        type: "address",
-      },
-      {
         components: [
           {
             internalType: "uint256",
@@ -46,6 +41,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "tokenPresale",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "liquidityPercentage",
             type: "uint256",
           },
           {
@@ -419,6 +419,13 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [],
+    name: "addLiquidity",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -517,6 +524,40 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "",
+        type: "bytes",
+      },
+    ],
+    name: "onERC721Received",
+    outputs: [
+      {
+        internalType: "bytes4",
+        name: "",
+        type: "bytes4",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "owner",
     outputs: [
@@ -544,8 +585,8 @@ const _abi = [
         type: "address",
       },
       {
-        internalType: "contract IUniswapV2Router02",
-        name: "uniswapV2Router02",
+        internalType: "address",
+        name: "dex",
         type: "address",
       },
       {
@@ -598,6 +639,11 @@ const _abi = [
           {
             internalType: "uint256",
             name: "tokenPresale",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "liquidityPercentage",
             type: "uint256",
           },
           {

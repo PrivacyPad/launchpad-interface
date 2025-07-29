@@ -379,7 +379,7 @@ export default function CreateLaunchpadView() {
             <PresalePreview launchpadData={launchpadData} />
 
             {/* Fee Structure */}
-            <FeeStructure liquidityLockTime={launchpadData.liquidityLockup || 0} />
+            <FeeStructure />
 
             {/* Requirements */}
             <Requirements
