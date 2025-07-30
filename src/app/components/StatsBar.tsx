@@ -1,7 +1,11 @@
+"use client";
+
+import useWeb3 from "@/hooks/useWeb3";
 import React from "react";
 
 export default function StatsBar() {
-  const walletConnected = false; // This would typically come from your app's state
+  const { address } = useWeb3();
+  const walletConnected = !!address;
 
   return (
     <div className="bg-neutral-800 border-b border-neutral-700">
