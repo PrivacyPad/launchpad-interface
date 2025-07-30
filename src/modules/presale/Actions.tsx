@@ -2,7 +2,7 @@ import { EPresaleOnchainState, TPresale } from "@/@types/launchpad.types";
 import Button from "@/components/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePrivacyPresaleContractWrite } from "@/hooks/useContract";
-import { usePresalePoolInfo } from "@/hooks/usePresalePoolInfo";
+import { usePresalePoolInfo } from "@/hooks/usePresale";
 import { toastTxSuccess } from "@/lib/toast";
 import { getErrorMessage } from "@/utils/error";
 import { useMutation } from "@tanstack/react-query";

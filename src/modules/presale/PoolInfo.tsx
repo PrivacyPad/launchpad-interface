@@ -3,7 +3,7 @@ import { CopyButton } from "@/components/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatNumber } from "@/utils/format";
 import { Token } from "@/web3/core/entities";
-import { format, formatDistance } from "date-fns";
+import { format } from "date-fns";
 import { formatUnits } from "viem";
 
 export default function PoolInfo({ launchpadData, CWETH }: { launchpadData: TPresale; CWETH: Token }) {
@@ -81,12 +81,12 @@ export default function PoolInfo({ launchpadData, CWETH }: { launchpadData: TPre
                 <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Liquidity Percent</td>
                 <td className="py-3 text-sm text-white">{Number(launchpadData.liquidityPercent) / 100}%</td>
               </tr>
-              <tr className="">
+              {/* <tr className="">
                 <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Liquidity Lockup Time</td>
                 <td className="py-3 text-sm text-white">
                   {formatDistance(0, launchpadData.liquidityLockTime * 1000, { includeSeconds: true })}
                 </td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div>

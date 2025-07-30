@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import ComingSoonTooltipWrapper from "@/components/ComingSoonTooltipWrapper";
 import DatePicker from "@/components/DatePicker";
 import Input from "@/components/Input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,7 +29,6 @@ export default function CreateLaunchpadView() {
       minContribution: undefined,
       maxContribution: undefined,
       liquidityPercent: 60,
-      liquidityLockup: undefined,
       listingRate: undefined,
       description: undefined,
       website: undefined,
@@ -216,35 +216,41 @@ export default function CreateLaunchpadView() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="minContribution" className="text-xs text-neutral-400 tracking-wider">
-                        MIN CONTRIBUTION (cWETH)
-                      </Label>
-                      <Input.Number
-                        id="minContribution"
-                        placeholder="e.g., 0.1"
-                        value={launchpadData.minContribution}
-                        {...form.register("minContribution")}
-                        error={!!formState.errors.minContribution}
-                        helperText={formState.errors.minContribution?.message}
-                        className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                      />
-                    </div>
+                    <ComingSoonTooltipWrapper comingSoon>
+                      <div className="space-y-2">
+                        <Label htmlFor="minContribution" className="text-xs text-neutral-400 tracking-wider">
+                          MIN CONTRIBUTION (cWETH)
+                        </Label>
+                        <Input.Number
+                          id="minContribution"
+                          placeholder="e.g., 0.1"
+                          // value={launchpadData.minContribution}
+                          // {...form.register("minContribution")}
+                          // error={!!formState.errors.minContribution}
+                          // helperText={formState.errors.minContribution?.message}
+                          className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
+                          disabled={true}
+                        />
+                      </div>
+                    </ComingSoonTooltipWrapper>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="maxContribution" className="text-xs text-neutral-400 tracking-wider">
-                        MAX CONTRIBUTION (cWETH)
-                      </Label>
-                      <Input.Number
-                        id="maxContribution"
-                        placeholder="e.g., 5"
-                        value={launchpadData.maxContribution}
-                        {...form.register("maxContribution")}
-                        error={!!formState.errors.maxContribution}
-                        helperText={formState.errors.maxContribution?.message}
-                        className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                      />
-                    </div>
+                    <ComingSoonTooltipWrapper comingSoon>
+                      <div className="space-y-2">
+                        <Label htmlFor="maxContribution" className="text-xs text-neutral-400 tracking-wider">
+                          MAX CONTRIBUTION (cWETH)
+                        </Label>
+                        <Input.Number
+                          id="maxContribution"
+                          placeholder="e.g., 5"
+                          // value={launchpadData.maxContribution}
+                          // {...form.register("maxContribution")}
+                          // error={!!formState.errors.maxContribution}
+                          // helperText={formState.errors.maxContribution?.message}
+                          className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
+                          disabled={true}
+                        />
+                      </div>
+                    </ComingSoonTooltipWrapper>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -263,7 +269,7 @@ export default function CreateLaunchpadView() {
                       />
                     </div>
 
-                    <div className="space-y-2">
+                    {/* <div className="space-y-2">
                       <Label htmlFor="liquidityLockup" className="text-xs text-neutral-400 tracking-wider">
                         LIQUIDITY LOCKUP TIME (days)
                       </Label>
@@ -276,7 +282,7 @@ export default function CreateLaunchpadView() {
                         helperText={formState.errors.liquidityLockup?.message}
                         className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -376,7 +382,7 @@ export default function CreateLaunchpadView() {
           {/* Preview & Summary */}
           <div className="space-y-6">
             {/* Presale Preview */}
-            <PresalePreview launchpadData={launchpadData} />
+            <PresalePreview launchpadData={launchpadData} erc20Info={erc20Info} />
 
             {/* Fee Structure */}
             <FeeStructure />

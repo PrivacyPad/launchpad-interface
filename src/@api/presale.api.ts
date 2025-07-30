@@ -3,15 +3,15 @@ import authorizedRequest from "./request";
 
 export const presaleApi = {
   getPresaleList: () => {
-    return authorizedRequest.get<TPresale[]>("/presales");
+    return authorizedRequest.get<TPresale[], TPresale[]>("/presales");
   },
-  createPresale: (data: TPresale) => {
-    return authorizedRequest.post<TPresale>("/presales", data);
+  createPresale: (data: Omit<TPresale, "id">) => {
+    return authorizedRequest.post<TPresale, TPresale>("/presales", data);
   },
   getPresaleByAddress: (address: string) => {
-    return authorizedRequest.get<TPresale>(`/presales/${address}`);
+    return authorizedRequest.get<TPresale, TPresale>(`/presales/${address}`);
   },
   updatePresale: (id: number, data: Partial<TPresale>) => {
-    return authorizedRequest.put<TPresale>(`/presales/${id}`, data);
+    return authorizedRequest.put<TPresale, TPresale>(`/presales/${id}`, data);
   },
 };

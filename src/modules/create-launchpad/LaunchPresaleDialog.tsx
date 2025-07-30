@@ -1,4 +1,6 @@
-import { TErc20Info } from "@/@types/token.types";
+import { presaleApi } from "@/@api/presale.api";
+import { EPresaleOnchainState, EPresaleStatus } from "@/@types/launchpad.types";
+import { TToken } from "@/@types/token.types";
 import Button from "@/components/Button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import useApproveCallback, { ApprovalState } from "@/hooks/useApproveCallback";
@@ -6,18 +8,19 @@ import { usePresaleFactoryContractWrite } from "@/hooks/useContract";
 import useWeb3 from "@/hooks/useWeb3";
 import { toastTxSuccess } from "@/lib/toast";
 import { cn } from "@/lib/utils";
+import { getErrorMessage } from "@/utils/error";
 import { formatNumber } from "@/utils/format";
 import { C_WETH9, ChainId } from "@/web3/core/constants";
 import { Token } from "@/web3/core/entities";
 import { getExplorerLink } from "@/web3/core/functions/explorer";
 import { DialogProps } from "@radix-ui/react-dialog";
 import BigNumber from "bignumber.js";
+import { EventLog } from "ethers";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatUnits, parseUnits } from "viem";
 import { FormData } from "./helpers";
-import { getErrorMessage } from "@/utils/error";
 
 export default function LaunchPresaleDialog({
   onOpenChange,
@@ -28,7 +31,7 @@ export default function LaunchPresaleDialog({
   open?: boolean;
   onOpenChange?: DialogProps["onOpenChange"];
   launchpadData: FormData;
-  erc20Info: TErc20Info;
+  erc20Info: TToken;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -54,7 +57,7 @@ function Content({
   onClose = () => {},
 }: {
   launchpadData: FormData;
-  erc20Info: TErc20Info;
+  erc20Info: TToken;
   onClose?: () => void;
 }) {
   const { address, chainId } = useWeb3();
@@ -70,8 +73,8 @@ function Content({
     const tokenAddress = launchpadData.tokenAddress;
     const softCapInWei = parseUnits(launchpadData.softCap.toString(), CWETH.decimals);
     const hardCapInWei = parseUnits(launchpadData.hardCap.toString(), CWETH.decimals);
-    const minContributionInWei = parseUnits(launchpadData.minContribution.toString(), CWETH.decimals);
-    const maxContributionInWei = parseUnits(launchpadData.maxContribution.toString(), CWETH.decimals);
+    // const minContributionInWei = parseUnits(launchpadData.minContribution.toString(), CWETH.decimals);
+    // const maxContributionInWei = parseUnits(launchpadData.maxContribution.toString(), CWETH.decimals);
     const startTime = Math.floor(launchpadData.startDate.getTime() / 1000); // Convert to seconds
     const endTime = Math.floor(launchpadData.endDate.getTime() / 1000); // Convert to seconds
     const liquidityPercent = parseUnits(launchpadData.liquidityPercent.toString(), 2); // Convert percentage to decimal
@@ -94,8 +97,8 @@ function Content({
       tokenAddress,
       softCap: softCapInWei,
       hardCap: hardCapInWei,
-      minContribution: minContributionInWei,
-      maxContribution: maxContributionInWei,
+      minContribution: BigInt(0),
+      maxContribution: BigInt(0),
       startTime,
       endTime,
       tokenForPresale,
@@ -153,7 +156,38 @@ function Content({
         end: data.endTime,
         liquidityPercentage: data.liquidityPercent,
       });
-      await tx.wait();
+      const receipt = await tx.wait();
+      // Read the address from TokenCreated event
+      const event = receipt?.logs?.[3] as EventLog;
+      const presaleAddress = event.args[0];
+      await presaleApi.createPresale({
+        token: erc20Info,
+        softCap: data.softCap.toString(),
+        hardCap: data.hardCap.toString(),
+        presaleRate: data.presaleRate.toString(),
+        liquidityRate: data.listingRate.toString(),
+        liquidityPercent: Number(data.liquidityPercent),
+        tokensForSale: data.tokenForPresale.toString(),
+        tokensForLiquidity: data.tokenAddLiquidity.toString(),
+        createdAt: new Date().toISOString(),
+        startTime: new Date(data.startTime * 1000).toISOString(),
+        endTime: new Date(data.endTime * 1000).toISOString(),
+        description: launchpadData.description,
+        social: {
+          website: launchpadData.website,
+          twitter: launchpadData.twitter,
+          telegram: launchpadData.telegram,
+        },
+        name: launchpadData.tokenName,
+        thumbnail: null,
+        presaleAddress: presaleAddress,
+        raisedAmount: "0",
+        txHash: tx.hash,
+        status: EPresaleOnchainState.ACTIVE,
+        updatedAt: new Date().toISOString(),
+        // @ts-ignore
+        liquidityLockTime: 0,
+      });
       toastTxSuccess("Launchpad created successfully!", tx.hash);
       setTransactionHash(tx.hash);
       setDeploymentStatus("success");
@@ -227,7 +261,7 @@ function Content({
               </div>
               <div className="flex justify-between">
                 <span className="text-neutral-400">Gas Fee:</span>
-                <span className="text-white font-mono">~0.002 ETH</span>
+                <span className="text-white font-mono">~0.0001 ETH</span>
               </div>
             </div>
           </div>
@@ -283,6 +317,13 @@ function Content({
                 <span className="text-neutral-400">Presale Rate:</span>
                 <span className="text-white font-mono">
                   {formatNumber(launchpadData.presaleRate, { fractionDigits: 6 }) || "0"} {erc20Info.symbol}/
+                  {CWETH.symbol}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-neutral-400">Listing Rate:</span>
+                <span className="text-white font-mono">
+                  {formatNumber(launchpadData.listingRate, { fractionDigits: 6 }) || "0"} {erc20Info.symbol}/
                   {CWETH.symbol}
                 </span>
               </div>

@@ -3,7 +3,8 @@ import { TToken } from "./token.types";
 export enum EPresaleStatus {
   Upcoming = "Upcoming",
   Active = "Active",
-  Ended = "Ended",
+  Completed = "Completed",
+  Failed = "Failed",
 }
 
 export enum EPresaleOnchainState {
@@ -15,7 +16,7 @@ export enum EPresaleOnchainState {
 
 export type TPresale = {
   id: number;
-  thumbnail?: string; // Optional thumbnail for the presale
+  thumbnail?: string | null; // Optional thumbnail for the presale
   name: string;
   description: string;
   startTime: string;
@@ -28,9 +29,10 @@ export type TPresale = {
   tokensForSale: string;
   tokensForLiquidity: string;
   liquidityPercent: number;
-  status: EPresaleStatus;
-  liquidityLockTime: number;
+  // liquidityLockTime: number; // in seconds
+  status: EPresaleOnchainState;
   presaleAddress: string;
+  txHash: string;
   raisedAmount: string;
   social: {
     website?: string | null;

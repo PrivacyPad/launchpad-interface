@@ -3,12 +3,12 @@ import authorizedRequest from "./request";
 
 export const tokenApi = {
   getTokenList: () => {
-    return authorizedRequest.get<TToken[]>("/tokens");
+    return authorizedRequest.get<TToken[], TToken[]>("/tokens");
   },
   getTokenByAddress: (address: string) => {
-    return authorizedRequest.get<TToken>(`/tokens/${address}`);
+    return authorizedRequest.get<TToken, TToken>(`/tokens/${address}`);
   },
   createToken: (data: TToken) => {
-    return authorizedRequest.post<TToken>("/tokens", data);
+    return authorizedRequest.post<TToken, TToken>("/tokens", data);
   },
 };

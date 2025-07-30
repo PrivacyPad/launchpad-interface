@@ -30,18 +30,22 @@ export const createPresaleSchema = yup.object().shape({
     .positive("Hard cap must be positive")
     .moreThan(yup.ref("softCap"), "Hard cap must be greater than soft cap"),
   minContribution: yup
-    .number()
-    .typeError("Minimum contribution must be a number")
+    .mixed()
+    // .number()
+    // .typeError("Minimum contribution must be a number")
     .label("Minimum contribution")
-    .required("Minimum contribution is required")
-    .positive("Minimum contribution must be positive"),
+    .optional(),
+  // .required("Minimum contribution is required")
+  // .positive("Minimum contribution must be positive"),
   maxContribution: yup
-    .number()
-    .typeError("Maximum contribution must be a number")
+    .mixed()
+    // .number()
+    // .typeError("Maximum contribution must be a number")
     .label("Maximum contribution")
-    .required("Maximum contribution is required")
-    .positive("Maximum contribution must be positive")
-    .moreThan(yup.ref("minContribution"), "Maximum contribution must be greater than minimum contribution"),
+    .optional(),
+  // .required("Maximum contribution is required")
+  // .positive("Maximum contribution must be positive")
+  // .moreThan(yup.ref("minContribution"), "Maximum contribution must be greater than minimum contribution"),
   liquidityPercent: yup
     .number()
     .typeError("Liquidity percentage must be a number")
@@ -49,13 +53,13 @@ export const createPresaleSchema = yup.object().shape({
     .required("Liquidity percentage is required")
     .min(50, "Liquidity percentage must be at least 50")
     .max(100, "Liquidity percentage cannot exceed 100"),
-  liquidityLockup: yup
-    .number()
-    .typeError("Liquidity lockup time must be a number")
-    .label("Liquidity lockup time")
-    .required("Liquidity lockup time is required")
-    .positive("Liquidity lockup time must be positive")
-    .integer("Liquidity lockup time must be an integer"),
+  // liquidityLockup: yup
+  //   .number()
+  //   .typeError("Liquidity lockup time must be a number")
+  //   .label("Liquidity lockup time")
+  //   .required("Liquidity lockup time is required")
+  //   .positive("Liquidity lockup time must be positive")
+  //   .integer("Liquidity lockup time must be an integer"),
   listingRate: yup
     .number()
     .typeError("Listing rate must be a number")
@@ -64,8 +68,8 @@ export const createPresaleSchema = yup.object().shape({
     .positive("Listing rate must be positive"),
   description: yup.string().label("Project description").required("Project description is required"),
   website: yup.string().url("Must be a valid URL").optional(),
-  telegram: yup.string().optional(),
-  twitter: yup.string().optional(),
+  telegram: yup.string().url("Must be a valid URL").optional(),
+  twitter: yup.string().url("Must be a valid URL").optional(),
   startDate: yup.date().required("Start date is required"),
   endDate: yup.date().required("End date is required").min(yup.ref("startDate"), "End date must be after start date"),
 });

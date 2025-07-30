@@ -1,11 +1,12 @@
+import { tokenApi } from "@/@api/token.api";
 import { TQueryOptions } from "@/@types/common.types";
-import { TErc20Info } from "@/@types/token.types";
+import { TToken } from "@/@types/token.types";
 import { ERC20__factory } from "@/web3/contracts";
 import { useQuery } from "@tanstack/react-query";
 import { isAddress } from "viem";
 import { usePublicClient } from "wagmi";
 
-export type UseErc20TokenInfoOptions = TQueryOptions<TErc20Info>;
+export type UseErc20TokenInfoOptions = TQueryOptions<TToken>;
 
 export function useErc20TokenInfo(tokenAddress?: string, options?: UseErc20TokenInfoOptions) {
   const publicClient = usePublicClient();
@@ -18,6 +19,14 @@ export function useErc20TokenInfo(tokenAddress?: string, options?: UseErc20Token
         throw new Error("Invalid token address");
       }
 
+      try {
+        const tokenInfo = await tokenApi.getTokenByAddress(tokenAddress);
+        return tokenInfo;
+      } catch {
+        // pass
+      }
+
+      // query the blockchain for token info
       const res = await multicall!({
         contracts: [
           { abi: ERC20__factory.abi, address: tokenAddress, functionName: "name" },
@@ -38,11 +47,11 @@ export function useErc20TokenInfo(tokenAddress?: string, options?: UseErc20Token
         name: res[0],
         symbol: res[1],
         decimals: res[2],
-        totalSupply: res[3],
-        icon: "https://amethyst-free-bandicoot-432.mypinata.cloud/ipfs/bafkreichcnizp5x7tir2itz4jliamic3yjbgqw5zbf4p3k35occvitw4sy",
-        description: null, // Placeholder for description, can be fetched from an API
-      } as TErc20Info;
+        totalSupply: res[3].toString(),
+        icon: "/images/empty-token.webp",
+      } as TToken;
     },
+    staleTime: 10_000,
     ...options,
     enabled: !!tokenAddress && isAddress(tokenAddress) && !!multicall,
   });

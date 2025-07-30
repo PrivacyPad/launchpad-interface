@@ -11,7 +11,7 @@ export default function BannerAndToken({ launchpadData }: { launchpadData: TPres
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute bottom-4 left-6 flex items-center gap-4">
           <Avatar className="size-16">
-            <AvatarImage src={launchpadData.token.icon} alt={launchpadData.token.name} />
+            <AvatarImage src={launchpadData.token.icon || undefined} alt={launchpadData.token.name} />
             <AvatarFallback>{launchpadData.token.symbol}</AvatarFallback>
           </Avatar>
           <div>
