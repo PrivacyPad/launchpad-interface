@@ -8,9 +8,9 @@ export type TSEO = {
 };
 
 const defaultSEO: TSEO = {
-  title: "PrivacyPad - Confidential Token Launchpad",
+  title: "PrivacyPad - Privacy-Preserving Launchpad Protocol",
   description:
-    "PrivacyPad is a privacy-focused launchpad enabling confidential participation in decentralized fundraising using Zama's FHE protocol",
+    "A decentralized launchpad protocol focused on financial privacy, powered by Fully Homomorphic Encryption (FHE).",
   thumbnail: "/thumbnail.png",
   keywords: ["Zama", "Launchpad", "Tokens", "Blockchain"],
 };
