@@ -1,7 +1,12 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useCWETHBalanceMutation } from "@/hooks/useBalance";
 import useWeb3 from "@/hooks/useWeb3";
 import { useCwethWrapModal } from "@/state/modal/cweth-wrap";
+import { getErrorMessage } from "@/utils/error";
 import { formatNumber } from "@/utils/format";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { useBalance } from "wagmi";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../../ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "../../ui/tabs";
@@ -12,9 +17,20 @@ export default function CwethWrapModal() {
   const { address } = useWeb3();
   const { open, setModalOpen } = useCwethWrapModal();
 
-  // const { data: cWETHBalance, error } = useCWETHBalance(address, {
-  //   enabled: true,
-  // });
+  const [showCwethBalance, setShowCwethBalance] = useState(false);
+
+  const {
+    data: cWETHBalance,
+    isPending,
+    mutateAsync: fetchCwethBalance,
+  } = useCWETHBalanceMutation(address, {
+    onError: (error) => {
+      console.error("Error fetching cWETH balance:", error);
+      toast.error("Failed to fetch cWETH balance.", { description: getErrorMessage(error) });
+      setShowCwethBalance(false);
+    },
+  });
+
   const { data: ethBalance } = useBalance({
     address: address,
   });
@@ -42,13 +58,58 @@ export default function CwethWrapModal() {
             <div className="bg-neutral-800 rounded-xs p-3">
               <div className="text-xs text-neutral-400 mb-1">ETH BALANCE</div>
               <div className="text-lg font-bold text-white font-mono">
-                {formatNumber(ethBalance?.formatted, { fractionDigits: 4 })}
+                {formatNumber(ethBalance?.formatted, { fractionDigits: 5 })}
               </div>
             </div>
             <div className="bg-neutral-800 rounded-xs p-3">
               <div className="text-xs text-neutral-400 mb-1">cWETH BALANCE</div>
-              <div className="text-lg font-bold text-primary font-mono">
-                ?{/* {formatNumber(cWETHBalance?.formatted, { fractionDigits: 4 })} */}
+              <div className="text-lg font-bold text-primary font-mono flex items-center gap-2">
+                {/* Reveal/Hide cWETH balance */}
+                <div className="flex-1">
+                  {showCwethBalance ? (
+                    <>
+                      {isPending ? (
+                        <div className="animate-pulse h-6 bg-neutral-700 w-30 rounded-xs" />
+                      ) : (
+                        formatNumber(cWETHBalance?.formatted, { fractionDigits: 5 })
+                      )}
+                    </>
+                  ) : (
+                    "••••••"
+                  )}
+                </div>
+                {showCwethBalance ? (
+                  <Tooltip>
+                    <TooltipTrigger onClick={() => setShowCwethBalance(false)}>
+                      <EyeOff className="w-5 h-5 text-neutral-400 cursor-pointer" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <span className="text-sm font-medium">Hide balance</span>
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  <Tooltip>
+                    <TooltipTrigger
+                      onClick={() => {
+                        fetchCwethBalance();
+                        setShowCwethBalance(true);
+                      }}
+                    >
+                      <Eye className="w-5 h-5 text-neutral-400 cursor-pointer" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <span className="text-sm font-medium">Reveal balance</span>
+                    </TooltipContent>
+                  </Tooltip>
+                )}
+                {/* <button
+                  type="button"
+                  className="ml-2 text-neutral-400 hover:text-primary focus:outline-none"
+                  onClick={() => setShowCwethBalance((prev) => !prev)}
+                  aria-label={showCwethBalance ? "Hide balance" : "Reveal balance"}
+                >
+                  {showCwethBalance ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button> */}
               </div>
             </div>
           </div>

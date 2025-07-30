@@ -1,7 +1,6 @@
-import { TQueryOptions } from "@/@types/common.types";
 import { ConfidentialWETH__factory } from "@/web3/contracts";
 import { C_WETH9 } from "@/web3/core/constants";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { ethers } from "ethers";
 import { Address, formatUnits } from "viem";
 import { usePublicClient } from "wagmi";
@@ -10,18 +9,18 @@ import { useEthersSigner } from "./useEthersSigner";
 import useWeb3 from "./useWeb3";
 import useZamaRelayerInstance from "./useZamaRelayerInstance";
 
-export type UseCommonBalancesOptions = TQueryOptions<GetBalanceData>;
+export type UseCommonBalancesOptions = UseMutationOptions<GetBalanceData>;
 
-export function useCWETHBalance(address?: string, options?: UseCommonBalancesOptions) {
+export function useCWETHBalanceMutation(address?: string, options?: UseCommonBalancesOptions) {
   const { chainId } = useWeb3();
   const cWETH = C_WETH9[chainId];
   const signer = useEthersSigner({ chainId });
   const publicClient = usePublicClient({ chainId });
   const relayerInstance = useZamaRelayerInstance();
 
-  return useQuery({
-    queryKey: ["commonTokenBalance", chainId],
-    queryFn: async () => {
+  return useMutation({
+    mutationKey: ["cwethBalance", address, chainId],
+    mutationFn: async () => {
       if (!cWETH || !signer || !publicClient || !relayerInstance)
         throw new Error("Missing dependencies for CWETH balance query");
 
@@ -88,7 +87,5 @@ export function useCWETHBalance(address?: string, options?: UseCommonBalancesOpt
     },
     retry: 0,
     ...options,
-    staleTime: 3_000,
-    enabled: (options?.enabled ?? true) && !!cWETH && !!signer && !!address && !!publicClient && !!relayerInstance,
   });
 }
