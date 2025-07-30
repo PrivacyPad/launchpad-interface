@@ -1,3 +1,5 @@
+import { TToken } from "./token.types";
+
 export enum EPresaleStatus {
   Upcoming = "Upcoming",
   Active = "Active",
@@ -11,15 +13,6 @@ export enum EPresaleOnchainState {
   FINALIZED = 4,
 }
 
-export type TToken = {
-  symbol: string;
-  name: string;
-  address: string;
-  decimals: number;
-  totalSupply: string;
-  icon?: string; // Optional icon for the token
-};
-
 export type TPresale = {
   id: number;
   thumbnail?: string; // Optional thumbnail for the presale
@@ -27,14 +20,7 @@ export type TPresale = {
   description: string;
   startTime: string;
   endTime: string;
-  token: {
-    symbol: string;
-    name: string;
-    address: string;
-    decimals: number;
-    totalSupply: string;
-    icon?: string;
-  };
+  token: TToken;
   softCap: string;
   hardCap: string;
   presaleRate: string;
@@ -53,4 +39,7 @@ export type TPresale = {
     discord?: string | null;
     medium?: string | null;
   };
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
 };

@@ -2,27 +2,16 @@ import { EPresaleOnchainState, TPresale } from "@/@types/launchpad.types";
 import Button from "@/components/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePrivacyPresaleContractWrite } from "@/hooks/useContract";
+import { usePresalePoolInfo } from "@/hooks/usePresalePoolInfo";
 import { toastTxSuccess } from "@/lib/toast";
 import { getErrorMessage } from "@/utils/error";
-import { PrivacyPresale__factory } from "@/web3/contracts";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Address } from "viem";
-import { useReadContracts } from "wagmi";
 
 export default function Actions({ launchpadData, address }: { launchpadData: TPresale; address: string }) {
   const presaleContract = usePrivacyPresaleContractWrite(launchpadData.presaleAddress);
 
-  const poolQuery = useReadContracts({
-    contracts: [
-      {
-        address: launchpadData.presaleAddress as Address,
-        abi: PrivacyPresale__factory.abi,
-        functionName: "pool",
-      },
-    ],
-    allowFailure: false,
-  });
+  const poolQuery = usePresalePoolInfo();
 
   const pool = poolQuery.data?.[0];
   const presaleState = pool?.[10];

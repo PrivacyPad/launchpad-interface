@@ -1,15 +1,17 @@
 "use client";
 
+import { tokenApi } from "@/@api/token.api";
+import { TToken } from "@/@types/token.types";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useTokenFactoryContractWrite } from "@/hooks/useContract";
 import { useUploadFile } from "@/hooks/useUploadFile";
 import useWeb3 from "@/hooks/useWeb3";
 import { toastTxSuccess } from "@/lib/toast";
 import yup from "@/lib/yup";
+import { getErrorMessage } from "@/utils/error";
 import { formatNumber } from "@/utils/format";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { EventLog } from "ethers";
@@ -31,18 +33,7 @@ const schema = yup.object().shape({
     .integer("Total supply must be an integer")
     .positive("Total supply must be a positive number")
     .required("Total supply is required"),
-  description: yup.string().optional(),
-  website: yup.string().url("Invalid URL").optional(),
-  telegram: yup.string().optional(),
-  twitter: yup.string().optional(),
-  iconFile: yup
-    .mixed<FileList | File[]>()
-    .test("fileType", "Unsupported file format", (value) => {
-      if (!value || !(value as FileList | File[])[0]) return true; // Allow empty or no file
-      const file = (value as FileList | File[])[0];
-      return file && ["image/jpeg", "image/png", "image/gif"].includes(file.type);
-    })
-    .optional(),
+
   icon: yup.string().optional(), // For compatibility with the form, but not used directly
 });
 type FormData = yup.InferType<typeof schema>;
@@ -57,12 +48,7 @@ export default function CreateTokenView() {
       symbol: "",
       decimals: 18,
       totalSupply: 1_000_000_000,
-      description: "",
-      website: "",
-      telegram: "",
-      twitter: "",
       icon: undefined,
-      iconFile: undefined,
     },
     mode: "onTouched",
     reValidateMode: "onChange",
@@ -82,11 +68,13 @@ export default function CreateTokenView() {
         toast.error("Icon file size must be less than 1MB.");
         return;
       }
-      if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
-        toast.error("Unsupported file format. Please upload a JPEG, PNG, or GIF image.");
+      if (!["image/jpeg", "image/png", "image/gif", "image/webp"].includes(file.type)) {
+        toast.error("Unsupported file format. Please upload a JPEG, PNG, GIF, or WEBP image.");
+        form.setValue("icon", ""); // Reset icon if unsupported file
         return;
       }
       try {
+        form.setValue("icon", ""); // Reset icon before upload
         const res = await uploadFileMutation.mutateAsync(file);
         form.setValue("icon", res.url);
       } catch (error) {
@@ -98,6 +86,8 @@ export default function CreateTokenView() {
           event.target.value = "";
         }
       }
+    } else {
+      form.setValue("icon", ""); // Reset icon if no file is selected
     }
   };
 
@@ -115,28 +105,33 @@ export default function CreateTokenView() {
         data.symbol,
         data.decimals,
         totalSupplyInWei,
-        data.website || ""
+        data.icon || ""
       );
       const receipt = await tx.wait();
 
       // Read the address from TokenCreated event
       const event = receipt?.logs?.[2] as EventLog;
       const tokenAddress = event.args[0];
-      toastTxSuccess("Token created successfully!", tx.hash);
       console.log({
         tokenAddress,
         name: data.name,
         symbol: data.symbol,
         decimals: data.decimals,
-        totalSupply: data.totalSupply,
-        description: data.description,
-        website: data.website,
-        telegram: data.telegram,
-        twitter: data.twitter,
+        totalSupply: totalSupplyInWei,
       });
+      const tokenData: TToken = {
+        address: tokenAddress,
+        name: data.name,
+        symbol: data.symbol,
+        decimals: data.decimals,
+        totalSupply: totalSupplyInWei.toString(),
+        icon: data.icon || null,
+      };
+      await tokenApi.createToken(tokenData);
+      toastTxSuccess("Token created successfully!", tx.hash);
     } catch (error) {
       console.error("Error creating token:", error);
-      toast.error("Failed to create token. Please try again.");
+      toast.error("Failed to create token", { description: getErrorMessage(error) });
     }
   };
 
@@ -153,7 +148,7 @@ export default function CreateTokenView() {
             form="create-token-form"
             type="submit"
             loading={formState.isSubmitting}
-            disabled={!formState.isValid || formState.isValidating || formState.isLoading || formState.isSubmitting}
+            disabled={formState.isValidating || formState.isLoading || formState.isSubmitting}
             loadingText="Deploying..."
             icon={<Zap className="w-4 h-4" />}
           >
@@ -164,177 +159,125 @@ export default function CreateTokenView() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Token Form */}
-        <Card className="lg:col-span-2 bg-neutral-900 border-neutral-700">
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-neutral-300 tracking-wider">TOKEN CONFIGURATION</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" id="create-token-form">
-              {/* Basic Information */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-primary tracking-wider">BASIC INFORMATION</h3>
+        <div className="lg:col-span-2">
+          <Card className="bg-neutral-900 border-neutral-700">
+            <CardHeader>
+              <CardTitle className="text-sm font-medium text-neutral-300 tracking-wider">TOKEN CONFIGURATION</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" id="create-token-form">
+                {/* Basic Information */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-medium text-primary tracking-wider">BASIC INFORMATION</h3>
 
-                <div className="space-y-2">
-                  <Label htmlFor="icon" className="text-xs text-neutral-400 tracking-wider">
-                    TOKEN ICON
-                  </Label>
-                  <Input
-                    id="icon"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleUploadIcon}
-                    className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                  />
-                  <p className="text-xs text-neutral-400">
-                    Upload a JPEG, PNG, or GIF image (max 1MB). Recommended size: 256x256px.
-                  </p>
-                  {uploadFileMutation.isPending && (
-                    <div className="flex flex-col gap-2 items-center justify-center mt-2">
-                      <span className="loading loading-spinner size-[1.25em]"></span>
-                    </div>
-                  )}
-                  {tokenData.icon && (
-                    <div className="mt-2 flex items-center justify-center">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={tokenData.icon}
-                        alt="Token Icon Preview"
-                        className="w-16 h-16 object-cover rounded-full"
+                  <div className="space-y-2">
+                    <Label htmlFor="icon" className="text-xs text-neutral-400 tracking-wider">
+                      TOKEN ICON
+                    </Label>
+                    <Input
+                      id="icon"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUploadIcon}
+                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
+                    />
+                    <p className="text-xs text-neutral-400">
+                      Upload a JPEG, PNG, or GIF image (max 1MB). Recommended size: 256x256px.
+                    </p>
+                    {uploadFileMutation.isPending && (
+                      <div className="flex flex-col gap-2 items-center justify-center mt-2 py-5">
+                        <span className="loading loading-spinner size-[1.25em] text-neutral-400"></span>
+                        <span className="text-sm text-neutral-400">Uploading icon...</span>
+                      </div>
+                    )}
+                    {tokenData.icon ? (
+                      <div className="py-4 flex items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={tokenData.icon}
+                          alt="Token Icon Preview"
+                          className="size-30 object-cover rounded-full"
+                        />
+                      </div>
+                    ) : (
+                      !uploadFileMutation.isPending && (
+                        <div className="flex justify-center py-4">
+                          <div className="size-30 border border-dashed border-neutral-600 rounded-full text-neutral-400 flex items-center justify-center text-sm">
+                            No Icon
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-xs text-neutral-400 tracking-wider">
+                        TOKEN NAME
+                      </Label>
+                      <Input
+                        id="name"
+                        placeholder="e.g., My Awesome Token"
+                        {...form.register("name")}
+                        onChange={() => {}}
+                        error={!!formState.errors.name}
+                        helperText={formState.errors.name?.message}
+                        className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                       />
                     </div>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-xs text-neutral-400 tracking-wider">
-                      TOKEN NAME
-                    </Label>
-                    <Input
-                      id="name"
-                      placeholder="e.g., My Awesome Token"
-                      {...form.register("name")}
-                      onChange={() => {}}
-                      error={!!formState.errors.name}
-                      helperText={formState.errors.name?.message}
-                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                    />
-                  </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="symbol" className="text-xs text-neutral-400 tracking-wider">
-                      SYMBOL
-                    </Label>
-                    <Input
-                      id="symbol"
-                      placeholder="e.g., MAT"
-                      {...form.register("symbol")}
-                      error={!!formState.errors.symbol}
-                      helperText={formState.errors.symbol?.message}
-                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="decimals" className="text-xs text-neutral-400 tracking-wider">
-                      DECIMALS
-                    </Label>
-                    <Input
-                      id="decimals"
-                      type="number"
-                      min="6"
-                      max="18"
-                      placeholder="e.g., 18"
-                      {...form.register("decimals")}
-                      error={!!formState.errors.decimals}
-                      helperText={formState.errors.decimals?.message}
-                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="totalSupply" className="text-xs text-neutral-400 tracking-wider">
-                      TOTAL SUPPLY
-                    </Label>
-                    <Input.Number
-                      id="totalSupply"
-                      placeholder="e.g., 1000000"
-                      {...form.register("totalSupply")}
-                      value={tokenData.totalSupply}
-                      error={!!formState.errors.totalSupply}
-                      helperText={formState.errors.totalSupply?.message}
-                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="description" className="text-xs text-neutral-400 tracking-wider">
-                    DESCRIPTION
-                  </Label>
-                  <Textarea
-                    id="description"
-                    placeholder="Describe your token and its use case..."
-                    {...form.register("description")}
-                    className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                  />
-                </div>
-              </div>
-
-              {/* Social Links */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-medium text-primary tracking-wider">SOCIAL LINKS</h3>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="website" className="text-xs text-neutral-400 tracking-wider">
-                      WEBSITE
-                    </Label>
-                    <Input
-                      id="website"
-                      placeholder="https://yourtoken.com"
-                      {...form.register("website")}
-                      error={!!formState.errors.website}
-                      helperText={formState.errors.website?.message}
-                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
-                    />
+                    <div className="space-y-2">
+                      <Label htmlFor="symbol" className="text-xs text-neutral-400 tracking-wider">
+                        SYMBOL
+                      </Label>
+                      <Input
+                        id="symbol"
+                        placeholder="e.g., MAT"
+                        {...form.register("symbol")}
+                        error={!!formState.errors.symbol}
+                        helperText={formState.errors.symbol?.message}
+                        className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
+                      />
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="telegram" className="text-xs text-neutral-400 tracking-wider">
-                        TELEGRAM
+                      <Label htmlFor="decimals" className="text-xs text-neutral-400 tracking-wider">
+                        DECIMALS
                       </Label>
                       <Input
-                        id="telegram"
-                        placeholder="@yourtokengroup"
-                        {...form.register("telegram")}
-                        error={!!formState.errors.telegram}
-                        helperText={formState.errors.telegram?.message}
+                        id="decimals"
+                        type="number"
+                        min="6"
+                        max="18"
+                        placeholder="e.g., 18"
+                        {...form.register("decimals")}
+                        error={!!formState.errors.decimals}
+                        helperText={formState.errors.decimals?.message}
                         className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                       />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="twitter" className="text-xs text-neutral-400 tracking-wider">
-                        TWITTER
+                      <Label htmlFor="totalSupply" className="text-xs text-neutral-400 tracking-wider">
+                        TOTAL SUPPLY
                       </Label>
-                      <Input
-                        id="twitter"
-                        placeholder="@yourtoken"
-                        {...form.register("twitter")}
-                        error={!!formState.errors.twitter}
-                        helperText={formState.errors.twitter?.message}
+                      <Input.Number
+                        id="totalSupply"
+                        placeholder="e.g., 1000000"
+                        {...form.register("totalSupply")}
+                        value={tokenData.totalSupply}
+                        error={!!formState.errors.totalSupply}
+                        helperText={formState.errors.totalSupply?.message}
                         className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                       />
                     </div>
                   </div>
                 </div>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Preview & Info */}
         <div className="space-y-6">

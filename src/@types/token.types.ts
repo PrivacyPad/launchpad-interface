@@ -14,3 +14,12 @@ export type TErc20Info = {
   github?: string | null;
   medium?: string | null;
 };
+
+export type TToken = {
+  address: string;
+  name: string;
+  symbol: string;
+  decimals: number;
+  totalSupply: string;
+  icon: string | null;
+};

@@ -33,4 +33,7 @@ export const mockPresale: TPresale = {
     discord: "https://discord.gg/example",
     medium: "https://medium.com/@example",
   },
+  createdAt: "2025-07-29T14:53:00.211Z",
+  updatedAt: "2025-07-29T14:53:00.211Z",
+  deletedAt: null,
 };
