@@ -179,7 +179,7 @@ function Content({
           telegram: launchpadData.telegram,
         },
         name: launchpadData.tokenName,
-        thumbnail: null,
+        thumbnail: launchpadData.thumbnail,
         presaleAddress: presaleAddress,
         raisedAmount: "0",
         txHash: tx.hash,

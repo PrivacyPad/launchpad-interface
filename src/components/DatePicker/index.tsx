@@ -29,6 +29,10 @@ export default function DatePicker({
       return;
     }
     const [hours, minutes] = time.split(":").map((str) => parseInt(str, 10));
+    if (isNaN(hours) || isNaN(minutes) || hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+      console.error("Invalid time format");
+      return;
+    }
     const newSelectedDate = setHours(setMinutes(date, minutes), hours);
     onChange(newSelectedDate);
     setTimeValue(time);

@@ -72,6 +72,7 @@ export const createPresaleSchema = yup.object().shape({
   twitter: yup.string().url("Must be a valid URL").optional(),
   startDate: yup.date().required("Start date is required"),
   endDate: yup.date().required("End date is required").min(yup.ref("startDate"), "End date must be after start date"),
+  thumbnail: yup.string().optional(),
 });
 
 export type FormData = yup.InferType<typeof createPresaleSchema>;

@@ -16,6 +16,8 @@ import LaunchPresaleDialog from "./LaunchPresaleDialog";
 import PresalePreview from "./PresalePreview";
 import Requirements from "./Requirements";
 import { createPresaleSchema } from "./helpers";
+import { toast } from "sonner";
+import { useUploadFile } from "@/hooks/useUploadFile";
 
 export default function CreateLaunchpadView() {
   const form = useForm({
@@ -36,6 +38,7 @@ export default function CreateLaunchpadView() {
       twitter: undefined,
       startDate: undefined,
       endDate: undefined,
+      thumbnail: undefined,
     },
     mode: "all",
     reValidateMode: "onChange",
@@ -53,6 +56,40 @@ export default function CreateLaunchpadView() {
 
   const onSubmit = () => {
     setShowLaunchDialog(true);
+  };
+
+  const uploadFileMutation = useUploadFile();
+
+  const handleUploadIcon = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file.size > 1 * 1024 * 1024) {
+        // 1MB limit
+        toast.error("Icon file size must be less than 1MB.");
+        return;
+      }
+      if (!["image/jpeg", "image/png", "image/gif", "image/webp"].includes(file.type)) {
+        toast.error("Unsupported file format. Please upload a JPEG, PNG, GIF, or WEBP image.");
+        form.setValue("thumbnail", "");
+        return;
+      }
+      try {
+        form.setValue("thumbnail", "");
+        const res = await uploadFileMutation.mutateAsync(file);
+        form.setValue("thumbnail", res.url);
+      } catch (error) {
+        console.error("Error uploading icon:", error);
+        toast.error("Failed to upload icon. Please try again.");
+        form.setValue("thumbnail", "");
+        // Reset the input file
+        if (event.target) {
+          event.target.value = "";
+        }
+      }
+    } else {
+      form.setValue("thumbnail", "");
+    }
   };
 
   useEffect(() => {
@@ -318,6 +355,44 @@ export default function CreateLaunchpadView() {
                   <h3 className="text-sm font-medium text-primary tracking-wider">PROJECT INFORMATION</h3>
 
                   <div className="space-y-2">
+                    <Label htmlFor="icon" className="text-xs text-neutral-400 tracking-wider">
+                      PROJECT THUMBNAIL
+                    </Label>
+                    <Input
+                      id="icon"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUploadIcon}
+                      className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
+                    />
+                    <p className="text-xs text-neutral-400">Upload a JPEG, PNG, or GIF image (max 1MB)</p>
+                    {uploadFileMutation.isPending && (
+                      <div className="flex flex-col gap-2 items-center justify-center mt-2 py-5">
+                        <span className="loading loading-spinner size-[1.25em] text-neutral-400"></span>
+                        <span className="text-sm text-neutral-400">Uploading image...</span>
+                      </div>
+                    )}
+                    {launchpadData.thumbnail ? (
+                      <div className="py-2 flex items-center justify-center">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={launchpadData.thumbnail}
+                          alt="Project Thumbnail Preview"
+                          className="h-30 w-full object-cover rounded"
+                        />
+                      </div>
+                    ) : (
+                      !uploadFileMutation.isPending && (
+                        <div className="flex justify-center py-2">
+                          <div className="h-30 w-full border border-dashed border-neutral-600 rounded text-neutral-400 flex items-center justify-center text-sm">
+                            No Image
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
                     <Label htmlFor="description" className="text-xs text-neutral-400 tracking-wider">
                       PROJECT DESCRIPTION
                     </Label>
@@ -342,6 +417,8 @@ export default function CreateLaunchpadView() {
                         placeholder="https://yourproject.com"
                         value={launchpadData.website}
                         {...form.register("website")}
+                        error={!!formState.errors.website}
+                        helperText={formState.errors.website?.message}
                         className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                       />
                     </div>
@@ -356,6 +433,8 @@ export default function CreateLaunchpadView() {
                           placeholder="@yourprojectgroup"
                           value={launchpadData.telegram}
                           {...form.register("telegram")}
+                          error={!!formState.errors.telegram}
+                          helperText={formState.errors.telegram?.message}
                           className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                         />
                       </div>
@@ -369,6 +448,8 @@ export default function CreateLaunchpadView() {
                           placeholder="@yourproject"
                           value={launchpadData.twitter}
                           {...form.register("twitter")}
+                          error={!!formState.errors.twitter}
+                          helperText={formState.errors.twitter?.message}
                           className="bg-neutral-800 border-neutral-600 text-white placeholder-neutral-400"
                         />
                       </div>

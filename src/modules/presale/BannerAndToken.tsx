@@ -7,7 +7,20 @@ import { Globe, Heart, MessageSquare, Share2 } from "lucide-react";
 export default function BannerAndToken({ launchpadData }: { launchpadData: TPresale }) {
   return (
     <Card className="bg-neutral-900 border-neutral-700 overflow-hidden py-0">
-      <div className="h-48 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 relative">
+      <div
+        className="h-52 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 relative"
+        style={
+          launchpadData.thumbnail
+            ? {
+                backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.7)), url(${launchpadData.thumbnail || "/images/default-banner.jpg"})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundColor: "transparent",
+              }
+            : {}
+        }
+      >
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute bottom-4 left-6 flex items-center gap-4">
           <Avatar className="size-16">
