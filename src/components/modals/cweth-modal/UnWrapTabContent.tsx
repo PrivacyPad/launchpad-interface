@@ -101,22 +101,24 @@ export default function UnWrapTabContent() {
 
       <Button
         onClick={handleUnwrapETH}
-        disabled={
-          wrapStatus === "loading" ||
-          !wrapAmount ||
-          Number.parseFloat(wrapAmount) <= 0 ||
-          Number.parseFloat(wrapAmount) > Number.parseFloat(cwethBalance)
-        }
+        // disabled={
+        //   wrapStatus === "loading" ||
+        //   !wrapAmount ||
+        //   Number.parseFloat(wrapAmount) <= 0 ||
+        //   Number.parseFloat(wrapAmount) > Number.parseFloat(cwethBalance)
+        // }
         className="w-full bg-primary hover:bg-primary/80 text-black font-semibold"
+        disabled
       >
-        {wrapStatus === "loading" ? (
+        {/* {wrapStatus === "loading" ? (
           <>
             <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             Unwrapping...
           </>
         ) : (
           "Unwrap cWETH to ETH"
-        )}
+        )} */}
+        Coming Soon
       </Button>
     </TabsContent>
   );

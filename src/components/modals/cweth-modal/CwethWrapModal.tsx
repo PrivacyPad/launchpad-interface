@@ -102,14 +102,6 @@ export default function CwethWrapModal() {
                     </TooltipContent>
                   </Tooltip>
                 )}
-                {/* <button
-                  type="button"
-                  className="ml-2 text-neutral-400 hover:text-primary focus:outline-none"
-                  onClick={() => setShowCwethBalance((prev) => !prev)}
-                  aria-label={showCwethBalance ? "Hide balance" : "Reveal balance"}
-                >
-                  {showCwethBalance ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button> */}
               </div>
             </div>
           </div>
@@ -131,15 +123,6 @@ export default function CwethWrapModal() {
             {/* Unwrap Tab */}
             <UnWrapTabContent />
           </Tabs>
-
-          {/* Close Button */}
-          {/* <Button
-            variant="outline"
-            onClick={resetWrapDialog}
-            className="w-full border-neutral-700 text-neutral-400 hover:bg-neutral-800 bg-transparent"
-          >
-            Close
-          </Button> */}
         </div>
       </DialogContent>
     </Dialog>
