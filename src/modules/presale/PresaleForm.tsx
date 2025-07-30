@@ -153,7 +153,8 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
                       approvalState !== ApprovalState.APPROVED ||
                       form.formState.isSubmitting ||
                       form.formState.isLoading ||
-                      !form.formState.isValid
+                      !form.formState.isValid ||
+                      status !== EPresaleStatus.Active
                     }
                     loading={form.formState.isSubmitting || form.formState.isLoading}
                     loadingText="Contributing..."

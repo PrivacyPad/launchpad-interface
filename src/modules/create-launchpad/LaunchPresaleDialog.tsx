@@ -1,7 +1,8 @@
 import { presaleApi } from "@/@api/presale.api";
-import { EPresaleOnchainState, EPresaleStatus } from "@/@types/launchpad.types";
+import { EPresaleOnchainState } from "@/@types/launchpad.types";
 import { TToken } from "@/@types/token.types";
 import Button from "@/components/Button";
+import { Button as UIButton } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import useApproveCallback, { ApprovalState } from "@/hooks/useApproveCallback";
 import { usePresaleFactoryContractWrite } from "@/hooks/useContract";
@@ -21,6 +22,7 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatUnits, parseUnits } from "viem";
 import { FormData } from "./helpers";
+import Link from "next/link";
 
 export default function LaunchPresaleDialog({
   onOpenChange,
@@ -68,6 +70,7 @@ function Content({
   const [launchStep, setLaunchStep] = useState(1); // 1: Token Approve, 2: Confirmation
   const [deploymentStatus, setDeploymentStatus] = useState("pending"); // pending, loading, success, error
   const [transactionHash, setTransactionHash] = useState("");
+  const [presaleAddress, setPresaleAddress] = useState("");
 
   const data = useMemo(() => {
     const tokenAddress = launchpadData.tokenAddress;
@@ -159,7 +162,7 @@ function Content({
       const receipt = await tx.wait();
       // Read the address from TokenCreated event
       const event = receipt?.logs?.[3] as EventLog;
-      const presaleAddress = event.args[0];
+      const presaleAddress = event.args[1];
       await presaleApi.createPresale({
         token: erc20Info,
         softCap: data.softCap.toString(),
@@ -190,6 +193,7 @@ function Content({
       });
       toastTxSuccess("Launchpad created successfully!", tx.hash);
       setTransactionHash(tx.hash);
+      setPresaleAddress(presaleAddress);
       setDeploymentStatus("success");
     } catch (error) {
       console.error("Error submitting launchpad data:", error);
@@ -371,15 +375,21 @@ function Content({
             >
               Cancel
             </Button>
-            <Button
-              onClick={handleConfirmDeployment}
-              disabled={deploymentStatus === "loading" || deploymentStatus === "success"}
-              className="flex-1 bg-primary hover:bg-primary/80 text-black font-semibold"
-              loading={deploymentStatus === "loading"}
-              loadingText="Deploying..."
-            >
-              {deploymentStatus === "success" ? "Completed" : "Confirm Launch"}
-            </Button>
+            {deploymentStatus === "success" && presaleAddress ? (
+              <UIButton asChild className="flex-1 bg-primary hover:bg-primary/80 text-black font-semibold">
+                <Link href={`/launchpad/${presaleAddress}`}>View Presale</Link>
+              </UIButton>
+            ) : (
+              <Button
+                onClick={handleConfirmDeployment}
+                disabled={deploymentStatus === "loading" || deploymentStatus === "success"}
+                className="flex-1 bg-primary hover:bg-primary/80 text-black font-semibold"
+                loading={deploymentStatus === "loading"}
+                loadingText="Deploying..."
+              >
+                {deploymentStatus === "success" ? "Completed" : "Confirm Launch"}
+              </Button>
+            )}
           </div>
         </div>
       )}
