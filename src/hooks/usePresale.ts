@@ -37,6 +37,18 @@ export function usePresaleListQuery(options?: TQueryOptions<TPresale[]>) {
   });
 }
 
+export function usePresaleQuery(presaleAddress?: string, options?: TQueryOptions<TPresale>) {
+  return useQuery({
+    queryKey: ["presale", presaleAddress],
+    queryFn: async () => {
+      return presaleApi.getPresaleByAddress(presaleAddress as string);
+    },
+    staleTime: 10_000,
+    ...options,
+    enabled: !!presaleAddress && (options?.enabled ?? false),
+  });
+}
+
 export const getPresaleStatus = (presale?: TPresale) => {
   if (!presale) return EPresaleStatus.Upcoming;
 

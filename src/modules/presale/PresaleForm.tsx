@@ -1,4 +1,4 @@
-import { TPresale } from "@/@types/launchpad.types";
+import { EPresaleStatus, TPresale } from "@/@types/launchpad.types";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import ConnectButton from "@/components/WalletButton/ConnectButton";
 import { ApprovalState, useConfidentialApproveCallback } from "@/hooks/useApproveCallback";
 import { usePrivacyPresaleContractWrite } from "@/hooks/useContract";
+import { usePresaleStatus } from "@/hooks/usePresale";
 import useWeb3 from "@/hooks/useWeb3";
 import useZamaRelayerInstance from "@/hooks/useZamaRelayerInstance";
 import { toastTxSuccess } from "@/lib/toast";
@@ -15,10 +16,10 @@ import yup from "@/lib/yup";
 import { getErrorMessage } from "@/utils/error";
 import { Token } from "@/web3/core/entities";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { parseUnits } from "viem";
+import CountdownTimer from "./Timer";
 
 const formSchema = yup.object().shape({
   amount: yup.number().label("Amount").required("Amount is required").moreThan(0, "Amount must be greater than 0"),
@@ -32,6 +33,8 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
   const presaleContract = usePrivacyPresaleContractWrite(launchpadData.presaleAddress);
   const relayerInstance = useZamaRelayerInstance();
 
+  const status = usePresaleStatus(launchpadData);
+
   const form = useForm({
     defaultValues: {
       amount: undefined,
@@ -40,13 +43,6 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
   });
 
   const formValues = form.watch();
-
-  const [timeLeft, setTimeLeft] = useState({
-    days: 1,
-    hours: 9,
-    minutes: 52,
-    seconds: 47,
-  });
 
   const [approvalState, approve] = useConfidentialApproveCallback({
     currency: CWETH,
@@ -63,26 +59,6 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
       toast.error("Approval failed. Please try again.");
     },
   });
-
-  // Countdown timer effect
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prev.days > 0) {
-          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const onSubmit = async (data: FormValues) => {
     try {
@@ -114,30 +90,21 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
     <Card className="bg-neutral-900 border-neutral-700">
       <CardContent className="">
         <div className="text-center space-y-4">
-          <div className="bg-orange-500/10 border border-orange-500/30 p-3">
-            <div className="text-orange-400 text-sm font-medium">AFFILIATE</div>
-            <div className="text-white text-xs mt-1">Presale Starts In</div>
+          <div className="bg-primary/10 border border-primary/30 p-3">
+            <div className="text-primary text-sm font-medium">PRESALE</div>
+            <div className="text-white text-xs mt-1">
+              {status === EPresaleStatus.Upcoming && "Presale Starts In"}
+              {status === EPresaleStatus.Active && "Presale Ends In"}
+              {status === EPresaleStatus.Completed && "Completed Presale"}
+              {status === EPresaleStatus.Failed && "Failed Presale"}
+            </div>
           </div>
 
           {/* Countdown Timer */}
-          <div className="grid grid-cols-4 gap-2">
-            <div className="bg-neutral-800 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{timeLeft.days.toString().padStart(2, "0")}</div>
-              <div className="text-xs text-neutral-400">Days</div>
-            </div>
-            <div className="bg-neutral-800 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{timeLeft.hours.toString().padStart(2, "0")}</div>
-              <div className="text-xs text-neutral-400">Hours</div>
-            </div>
-            <div className="bg-neutral-800 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{timeLeft.minutes.toString().padStart(2, "0")}</div>
-              <div className="text-xs text-neutral-400">Min</div>
-            </div>
-            <div className="bg-neutral-800 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{timeLeft.seconds.toString().padStart(2, "0")}</div>
-              <div className="text-xs text-neutral-400">Sec</div>
-            </div>
-          </div>
+          {status === EPresaleStatus.Upcoming && <CountdownTimer to={new Date(launchpadData.startTime).getTime()} />}
+          {status === EPresaleStatus.Active && <CountdownTimer to={new Date(launchpadData.endTime).getTime()} />}
+
+          {/* Token Info */}
 
           {/* Investment Interface */}
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -202,7 +169,15 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-neutral-400">Status</span>
-              <Badge className="bg-blue-500/20 text-blue-400">Upcoming</Badge>
+              {status === EPresaleStatus.Upcoming ? (
+                <Badge className="bg-blue-500/20 text-blue-400">Upcoming</Badge>
+              ) : status === EPresaleStatus.Active ? (
+                <Badge className="bg-green-500/20 text-green-400">Active</Badge>
+              ) : status === EPresaleStatus.Completed ? (
+                <Badge className="bg-gray-500/20 text-gray-400">Completed</Badge>
+              ) : status === EPresaleStatus.Failed ? (
+                <Badge className="bg-red-500/20 text-red-400">Failed</Badge>
+              ) : null}
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-400">Sale Type</span>

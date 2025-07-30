@@ -11,13 +11,13 @@ export default function BannerAndToken({ launchpadData }: { launchpadData: TPres
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute bottom-4 left-6 flex items-center gap-4">
           <Avatar className="size-16">
-            <AvatarImage src={launchpadData.token.icon || undefined} alt={launchpadData.token.name} />
-            <AvatarFallback>{launchpadData.token.symbol}</AvatarFallback>
+            <AvatarImage src={launchpadData.token.icon || "/images/empty-token.webp"} alt={launchpadData.token.name} />
+            <AvatarFallback className="bg-primary text-black">{launchpadData.token.symbol}</AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-2xl font-bold text-white">{launchpadData.name}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <Badge className="bg-yellow-500 text-white">PRESALE</Badge>
+              <Badge className="bg-primary text-black">PRESALE</Badge>
               <div className="flex items-center gap-1">
                 <Globe className="w-4 h-4 text-white" />
                 <MessageSquare className="w-4 h-4 text-white" />

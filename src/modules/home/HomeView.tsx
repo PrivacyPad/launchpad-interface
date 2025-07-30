@@ -81,7 +81,7 @@ export default function HomeView() {
             </div>
             {isLoading || isPending ? (
               <>
-                <div className="flex items-center justify-center py-10 flex-col gap-2 text-neutral-400">
+                <div className="flex items-center justify-center py-10 flex-col gap-2 text-primary">
                   <Loader2 className="size-[1.5em] animate-spin" />
                   <span className="">Loading data...</span>
                 </div>
