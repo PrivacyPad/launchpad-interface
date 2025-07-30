@@ -27,24 +27,25 @@ export default function HeroBanner() {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-primary to-blue-400 bg-clip-text text-transparent animate-in fade-in slide-in-from-bottom-20 duration-1000">
-            Launch Your Token
-            <br />
-            <span className="text-4xl md:text-6xl">Into the Future</span>
+            Ready to launch your Token with privacy?
+            {/* <br />
+            <span className="text-4xl md:text-6xl">Into the Future</span> */}
           </h1>
 
           <p className="text-sm md:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-20 delay-200 duration-1000">
-            Create, launch, and manage your token presales with our cutting-edge platform. Join thousands of successful
-            projects that chose our launchpad.
+            Create, launch, and manage your token presales with unparalleled financial privacy. Powered by Fully
+            Homomorphic Encryption (FHE) via the Zama protocol, PrivacyPad lets users invest without ever revealing
+            individual purchase amounts.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-in fade-in slide-in-from-bottom-20 delay-400 duration-1000">
             <Button
               size="default"
               className="bg-gradient-to-r from-primary to-yellow-500 hover:from-yellow-500 hover:to-primary text-black px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300 group"
-              onClick={() => router.push("/create-token")}
+              onClick={() => router.push("/create-launchpad")}
             >
               <Rocket className="w-4 h-4 group-hover:animate-bounce" />
-              Launch Your Token
+              Launch Privately
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
 

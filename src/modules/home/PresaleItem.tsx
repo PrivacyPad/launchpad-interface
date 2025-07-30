@@ -109,10 +109,10 @@ export default function PresaleItem({ presale }: { presale: TPresale }) {
             <div className="flex items-center gap-2">
               <span className={`${status === EPresaleStatus.Active ? "text-primary font-bold" : statusConfig.text}`}>
                 {status === EPresaleStatus.Active
-                  ? "? / ?"
+                  ? `? / ${formatNumber(target, { fractionDigits: 4 })} cWETH`
                   : `${formatNumber(raised, { fractionDigits: 4 })} / ${formatNumber(target, { fractionDigits: 4 })} cWETH`}
               </span>
-              <span className="text-neutral-500">{status === EPresaleStatus.Active ? "(?%)" : `(${progress}%)`}</span>
+              <span className="text-neutral-500">{status === EPresaleStatus.Active ? "" : `(${progress}%)`}</span>
             </div>
           </div>
 
