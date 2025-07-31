@@ -28,6 +28,17 @@ export default function PoolInfo({ launchpadData, CWETH }: { launchpadData: TPre
                 </td>
               </tr>
               <tr className="">
+                <td className="py-3 pr-4 text-sm text-neutral-400 font-medium w-1/3">cToken Address</td>
+                <td className="py-3 text-sm text-white">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-neutral-800 px-2 py-1 rounded text-primary text-sm truncate min-w-0">
+                      {launchpadData.cTokenAddress}
+                    </div>
+                    <CopyButton text={launchpadData.cTokenAddress} />
+                  </div>
+                </td>
+              </tr>
+              <tr className="">
                 <td className="py-3 pr-4 text-sm text-neutral-400 font-medium">Tokens For Presale</td>
                 <td className="py-3 text-sm text-white">
                   {formatNumber(formatUnits(BigInt(launchpadData.tokensForSale), launchpadData.token.decimals))}{" "}

@@ -11,10 +11,13 @@ import { toast } from "sonner";
 export default function Actions({ launchpadData, address }: { launchpadData: TPresale; address: string }) {
   const presaleContract = usePrivacyPresaleContractWrite(launchpadData.presaleAddress);
 
-  const poolQuery = usePresalePoolInfo();
+  const poolQuery = usePresalePoolInfo(launchpadData.presaleAddress);
+  console.log("🚀 ~ Actions ~ poolQuery:", poolQuery.isFetching);
 
   const pool = poolQuery.data?.[0];
   const presaleState = pool?.[10];
+
+  const isSaleEnded = new Date(launchpadData.endTime).getTime() < Date.now();
 
   const claimMutation = useMutation({
     mutationFn: async () => {
@@ -55,6 +58,7 @@ export default function Actions({ launchpadData, address }: { launchpadData: TPr
       } else {
         toast.success("Finalization successful");
       }
+      poolQuery.refetch();
     },
   });
 
@@ -90,11 +94,14 @@ export default function Actions({ launchpadData, address }: { launchpadData: TPr
           onClick={() => finalizeMutation.mutate()}
           loading={finalizeMutation.isPending}
           disabled={
-            finalizeMutation.isPending || finalizeMutation.isSuccess || presaleState !== EPresaleOnchainState.ACTIVE
+            finalizeMutation.isPending ||
+            finalizeMutation.isSuccess ||
+            presaleState !== EPresaleOnchainState.ACTIVE ||
+            !isSaleEnded
           }
           loadingText="Finalizing..."
         >
-          Finalize
+          Request Finalization
         </Button>
         {presaleState === EPresaleOnchainState.FINALIZED && (
           <Button

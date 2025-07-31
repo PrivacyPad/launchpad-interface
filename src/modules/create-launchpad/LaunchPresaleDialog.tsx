@@ -163,6 +163,7 @@ function Content({
       // Read the address from TokenCreated event
       const event = receipt?.logs?.[3] as EventLog;
       const presaleAddress = event.args[1];
+      const cTokenAddress = event.args[3];
       await presaleApi.createPresale({
         token: erc20Info,
         softCap: data.softCap.toString(),
@@ -190,6 +191,8 @@ function Content({
         updatedAt: new Date().toISOString(),
         // @ts-ignore
         liquidityLockTime: 0,
+        cTokenAddress: cTokenAddress,
+        creator: address,
       });
       toastTxSuccess("Launchpad created successfully!", tx.hash);
       setTransactionHash(tx.hash);

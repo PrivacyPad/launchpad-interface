@@ -32,6 +32,8 @@ export type TPresale = {
   // liquidityLockTime: number; // in seconds
   status: EPresaleOnchainState;
   presaleAddress: string;
+  cTokenAddress: string;
+  creator: string;
   txHash: string;
   raisedAmount: string;
   social: {

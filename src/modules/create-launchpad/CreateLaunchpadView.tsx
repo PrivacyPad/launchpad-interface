@@ -378,7 +378,7 @@ export default function CreateLaunchpadView() {
                         <img
                           src={launchpadData.thumbnail}
                           alt="Project Thumbnail Preview"
-                          className="h-30 w-full object-cover rounded"
+                          className="aspect-[3.85] w-full object-cover rounded"
                         />
                       </div>
                     ) : (

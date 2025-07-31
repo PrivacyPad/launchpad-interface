@@ -12,7 +12,7 @@ import PresaleItem from "./PresaleItem";
 import StatsOverview from "./StatsOverview";
 
 export default function HomeView() {
-  const { data: presaleList, isLoading, isPending } = usePresaleListQuery({ enabled: true });
+  const { data: presaleList, isLoading, isPending } = usePresaleListQuery({ enabled: true, refetchInterval: 20_000 });
 
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");

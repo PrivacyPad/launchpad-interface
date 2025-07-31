@@ -8,7 +8,7 @@ export default function BannerAndToken({ launchpadData }: { launchpadData: TPres
   return (
     <Card className="bg-neutral-900 border-neutral-700 overflow-hidden py-0">
       <div
-        className="h-52 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 relative"
+        className="aspect-[3.85] bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700 relative"
         style={
           launchpadData.thumbnail
             ? {

@@ -3,6 +3,6 @@
 import { useTokenListQuery } from "@/hooks/useTokens";
 
 export default function DataPrefetch() {
-  useTokenListQuery({ enabled: true });
+  useTokenListQuery({ enabled: true, refetchInterval: 20_000 });
   return null;
 }

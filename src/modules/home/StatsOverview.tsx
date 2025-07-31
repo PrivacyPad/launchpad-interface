@@ -51,7 +51,8 @@ export default function StatsOverview() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-neutral-400 tracking-wider mb-2">TOTAL RAISED</p>
-              <p className="text-3xl font-bold text-white">${animatedStats.totalRaised}M</p>
+              {/* <p className="text-3xl font-bold text-white">${animatedStats.totalRaised}M</p> */}
+              <p className="text-3xl font-bold text-white">--</p>
             </div>
             <div className="p-3 bg-primary/10 rounded-full">
               <DollarSign className="w-8 h-8 text-primary" />
@@ -65,7 +66,8 @@ export default function StatsOverview() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-neutral-400 tracking-wider mb-2">ACTIVE LAUNCHES</p>
-              <p className="text-3xl font-bold text-white">{animatedStats.activeLaunches}</p>
+              {/* <p className="text-3xl font-bold text-white">{animatedStats.activeLaunches}</p> */}
+              <p className="text-3xl font-bold text-white">--</p>
             </div>
             <div className="p-3 bg-primary/10 rounded-full">
               <Rocket className="w-8 h-8 text-primary" />
@@ -79,7 +81,8 @@ export default function StatsOverview() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-neutral-400 tracking-wider mb-2">TOTAL INVESTORS</p>
-              <p className="text-3xl font-bold text-white">{animatedStats.totalInvestors.toLocaleString()}</p>
+              {/* <p className="text-3xl font-bold text-white">{animatedStats.totalInvestors.toLocaleString()}</p> */}
+              <p className="text-3xl font-bold text-white">--</p>
             </div>
             <div className="p-3 bg-primary/10 rounded-full">
               <Users className="w-8 h-8 text-primary" />
@@ -93,7 +96,8 @@ export default function StatsOverview() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs text-neutral-400 tracking-wider mb-2">SUCCESS RATE</p>
-              <p className="text-3xl font-bold text-white">{animatedStats.successRate}%</p>
+              {/* <p className="text-3xl font-bold text-white">{animatedStats.successRate}%</p> */}
+              <p className="text-3xl font-bold text-white">--</p>
             </div>
             <div className="p-3 bg-primary/10 rounded-full">
               <TrendingUp className="w-8 h-8 text-primary" />

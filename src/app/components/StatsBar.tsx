@@ -14,15 +14,15 @@ export default function StatsBar() {
           <div className="flex items-center gap-8 text-xs">
             <div className="flex items-center gap-2">
               <span className="text-neutral-400">TOKENS CREATED:</span>
-              <span className="text-white">1,247</span>
+              <span className="text-white">--</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-neutral-400">ACTIVE LAUNCHES:</span>
-              <span className="text-primary">23</span>
+              <span className="text-primary">--</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-neutral-400">TOTAL RAISED:</span>
-              <span className="text-white">$24.7M</span>
+              <span className="text-white">--</span>
             </div>
           </div>
           <div className="text-xs text-neutral-500">

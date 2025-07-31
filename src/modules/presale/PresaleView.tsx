@@ -10,7 +10,6 @@ import Actions from "./Actions";
 import BannerAndToken from "./BannerAndToken";
 import Comments from "./Comments";
 import ContributionInfo from "./ContributionInfo";
-import Newsletter from "./Newsletter";
 import PoolInfo from "./PoolInfo";
 import PresaleForm from "./PresaleForm";
 import TokenDetails from "./TokenDetails";
@@ -27,6 +26,7 @@ export default function PresaleView() {
     isPending,
   } = usePresaleQuery(presaleAddress, {
     enabled: true,
+    refetchInterval: 20_000,
   });
 
   return (
