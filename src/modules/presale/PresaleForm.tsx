@@ -1,4 +1,4 @@
-import { EPresaleStatus, TPresale } from "@/@types/launchpad.types";
+import { EPresaleOnchainState, EPresaleStatus, TPresale } from "@/@types/launchpad.types";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -8,17 +8,18 @@ import { Label } from "@/components/ui/label";
 import ConnectButton from "@/components/WalletButton/ConnectButton";
 import { ApprovalState, useConfidentialApproveCallback } from "@/hooks/useApproveCallback";
 import { usePrivacyPresaleContractWrite } from "@/hooks/useContract";
-import { usePresaleStatus } from "@/hooks/usePresale";
+import { usePresalePoolInfo, usePresaleStatus } from "@/hooks/usePresale";
 import useWeb3 from "@/hooks/useWeb3";
 import useZamaRelayerInstance from "@/hooks/useZamaRelayerInstance";
 import { toastTxSuccess } from "@/lib/toast";
 import yup from "@/lib/yup";
 import { getErrorMessage } from "@/utils/error";
+import { formatNumber } from "@/utils/format";
 import { Token } from "@/web3/core/entities";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { parseUnits } from "viem";
+import { formatEther, parseUnits } from "viem";
 import CountdownTimer from "./Timer";
 
 const formSchema = yup.object().shape({
@@ -33,7 +34,11 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
   const presaleContract = usePrivacyPresaleContractWrite(launchpadData.presaleAddress);
   const relayerInstance = useZamaRelayerInstance();
 
-  const status = usePresaleStatus(launchpadData);
+  const { data: poolInfo } = usePresalePoolInfo(launchpadData.presaleAddress, {
+    refetchInterval: false,
+  });
+
+  const status = usePresaleStatus(launchpadData, poolInfo);
 
   const form = useForm({
     defaultValues: {
@@ -178,7 +183,11 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
                 <Badge className="bg-gray-500/20 text-gray-400">Completed</Badge>
               ) : status === EPresaleStatus.Failed ? (
                 <Badge className="bg-red-500/20 text-red-400">Failed</Badge>
-              ) : null}
+              ) : status === EPresaleStatus.Ended ? (
+                <Badge className="bg-yellow-500/20 text-yellow-400">Ended</Badge>
+              ) : (
+                <Badge className="bg-gray-500/20 text-gray-400">Unknown</Badge>
+              )}
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-400">Sale Type</span>
@@ -186,7 +195,12 @@ export default function PresaleForm({ launchpadData, CWETH }: { launchpadData: T
             </div>
             <div className="flex justify-between">
               <span className="text-neutral-400">Current Raised</span>
-              <span className="text-white">? {CWETH.symbol}</span>
+              <span className="text-white">
+                {poolInfo && [EPresaleOnchainState.CANCELED, EPresaleOnchainState.FINALIZED].includes(poolInfo.state)
+                  ? formatNumber(formatEther(poolInfo!.weiRaise), { fractionDigits: 5 })
+                  : "?"}{" "}
+                {CWETH.symbol}
+              </span>
             </div>
           </div>
         </div>

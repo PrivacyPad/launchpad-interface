@@ -5,6 +5,7 @@ export enum EPresaleStatus {
   Active = "Active",
   Completed = "Completed",
   Failed = "Failed",
+  Ended = "Ended",
 }
 
 export enum EPresaleOnchainState {

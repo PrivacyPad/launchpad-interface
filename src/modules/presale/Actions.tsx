@@ -12,10 +12,9 @@ export default function Actions({ launchpadData, address }: { launchpadData: TPr
   const presaleContract = usePrivacyPresaleContractWrite(launchpadData.presaleAddress);
 
   const poolQuery = usePresalePoolInfo(launchpadData.presaleAddress);
-  console.log("🚀 ~ Actions ~ poolQuery:", poolQuery.isFetching);
+  console.debug("🚀 ~ Actions ~ poolQuery:", poolQuery.isFetching);
 
-  const pool = poolQuery.data?.[0];
-  const presaleState = pool?.[10];
+  const presaleState = poolQuery.data?.state;
 
   const isSaleEnded = new Date(launchpadData.endTime).getTime() < Date.now();
 
@@ -54,9 +53,9 @@ export default function Actions({ launchpadData, address }: { launchpadData: TPr
     },
     onSuccess: (tx) => {
       if (tx.hash) {
-        toastTxSuccess("Finalization successful", tx.hash);
+        toastTxSuccess("Request finalization successful", tx.hash);
       } else {
-        toast.success("Finalization successful");
+        toast.success("Request finalization successful");
       }
       poolQuery.refetch();
     },
