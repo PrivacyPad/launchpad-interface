@@ -20,7 +20,7 @@ export function useErc20TokenInfo(tokenAddress?: string, options?: UseErc20Token
       }
 
       try {
-        const tokenInfo = await tokenApi.getTokenByAddress(tokenAddress);
+        const tokenInfo = await tokenApi.getTokenByAddress(tokenAddress.toLowerCase());
         return tokenInfo;
       } catch {
         // pass

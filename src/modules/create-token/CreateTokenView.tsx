@@ -111,7 +111,7 @@ export default function CreateTokenView() {
 
       // Read the address from TokenCreated event
       const event = receipt?.logs?.[2] as EventLog;
-      const tokenAddress = event.args[0];
+      const tokenAddress = event.args[0] as string;
       console.log({
         tokenAddress,
         name: data.name,
@@ -120,7 +120,7 @@ export default function CreateTokenView() {
         totalSupply: totalSupplyInWei,
       });
       const tokenData: TToken = {
-        address: tokenAddress,
+        address: tokenAddress.toLowerCase(),
         name: data.name,
         symbol: data.symbol,
         decimals: data.decimals,
