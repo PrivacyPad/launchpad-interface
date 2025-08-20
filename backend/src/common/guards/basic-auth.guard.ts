@@ -7,7 +7,7 @@ export class BasicAuthGuard implements CanActivate {
   constructor() {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest() as Request;
+    const request = context.switchToHttp().getRequest();
 
     const authenticationArray = request?.headers?.authorization?.split?.(' ');
 

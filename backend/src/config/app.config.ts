@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('dotenv').config();
+import dotenv from 'dotenv';
 import z from 'zod';
 import { parseEnv } from 'znv';
+
+dotenv.config();
 
 const envSchema = z.object({
   ENV_PROJECT: z.enum(['local', 'development', 'staging', 'production']),

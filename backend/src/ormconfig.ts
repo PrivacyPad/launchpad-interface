@@ -27,4 +27,4 @@ export const ormConfig: CustomTypeOrmModuleOptions = {
   migrationsRun: false,
 };
 
-export const AppDataSource = new DataSource(ormConfig);
+export default new DataSource(ormConfig);

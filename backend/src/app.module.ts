@@ -5,9 +5,11 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { RateLimitGuard } from './common/guards';
 import { LoggingInterceptor, TimeoutInterceptor } from './common/interceptors';
+import { AuthModule } from './modules/auth';
 import { HealthModule } from './modules/health';
-import { ormConfig } from './ormconfig';
 import { LoggerModule } from './modules/logger';
+import { UserModule } from './modules/user';
+import { ormConfig } from './ormconfig';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { LoggerModule } from './modules/logger';
 
     LoggerModule,
     HealthModule,
+    AuthModule,
+    UserModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: RateLimitGuard },

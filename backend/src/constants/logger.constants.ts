@@ -6,4 +6,4 @@ export const LOG_LEVEL_MAPPING: { [key: string]: number } = {
   FATAL: 4,
 };
 
-export const LOG_LEVEL_NEST = ["debug", "log", "warn", "error"];
+export const LOG_LEVEL_NEST = ['debug', 'log', 'warn', 'error'];
